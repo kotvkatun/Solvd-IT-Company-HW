@@ -1,0 +1,10 @@
+{
+  "projectName": "AI Grift",
+  "tasks" : [
+    {
+      "taskName": "Train model",
+      "timeRequired": 100,
+      "reward": "50000.0"
+    }
+  ]
+}

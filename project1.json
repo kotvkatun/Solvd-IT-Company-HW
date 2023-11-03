@@ -1,0 +1,10 @@
+{
+  "projectName": "RaspilOtkat",
+  "tasks" : [
+    {
+      "taskName": "Implement UI",
+      "timeRequired": 100,
+      "reward": "50000.0"
+    }
+  ]
+}
