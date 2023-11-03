@@ -86,6 +86,9 @@ public class Main {
                     break;
                 case "exit":
                     System.exit(0);
+                default:
+                    System.out.println("Wrong command.");
+                    break;
             }
         }
     }

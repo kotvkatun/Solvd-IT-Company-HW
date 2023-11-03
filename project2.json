@@ -5,6 +5,16 @@
       "taskName": "Train model",
       "timeRequired": 100,
       "reward": "50000.0"
+    },
+    {
+      "taskName": "Build web scrapper",
+      "timeRequired": 80,
+      "reward": "4000.0"
+    },
+    {
+      "taskName": "Set up GraphQL",
+      "timeRequired": 120,
+      "reward": "60000.0"
     }
   ]
 }
