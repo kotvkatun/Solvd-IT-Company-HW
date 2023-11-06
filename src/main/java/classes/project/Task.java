@@ -5,14 +5,14 @@ import java.util.Objects;
 
 public class Task {
     private String taskName;
-    private final Project project;
+    private final Project PROJECT;
     private Integer timeRequired;
     private BigDecimal reward;
     private Boolean isComplete = false;
 
-    public Task(String taskName, Project project, Integer timeRequired, BigDecimal reward) {
+    public Task(String taskName, Project PROJECT, Integer timeRequired, BigDecimal reward) {
         this.taskName = taskName;
-        this.project = project;
+        this.PROJECT = PROJECT;
         this.timeRequired = timeRequired;
         this.reward = reward;
     }
@@ -31,8 +31,8 @@ public class Task {
         this.taskName = taskName;
     }
 
-    public Project getProject() {
-        return project;
+    public Project getPROJECT() {
+        return PROJECT;
     }
 
     public Integer getTimeRequired() {
@@ -64,11 +64,11 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(taskName, task.taskName) && Objects.equals(project, task.project) && Objects.equals(timeRequired, task.timeRequired) && Objects.equals(reward, task.reward) && Objects.equals(isComplete, task.isComplete);
+        return Objects.equals(taskName, task.taskName) && Objects.equals(PROJECT, task.PROJECT) && Objects.equals(timeRequired, task.timeRequired) && Objects.equals(reward, task.reward) && Objects.equals(isComplete, task.isComplete);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskName, project, timeRequired, reward, isComplete);
+        return Objects.hash(taskName, PROJECT, timeRequired, reward, isComplete);
     }
 }
