@@ -2,7 +2,7 @@ package classes;
 
 import classes.developer.Developer;
 import classes.initialiser.DeveloperInitialiser;
-import classes.json.JSONLoader;
+import classes.json.JSONManager;
 import classes.project.Project;
 import classes.ui.Input;
 import classes.ui.MainMenu;
@@ -13,7 +13,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         List<Developer> developerList = DeveloperInitialiser.initialiseDeveloperList();
-        Project project = JSONLoader.loadProject("project1");
+        Project project = JSONManager.loadProject("project1");
         if (project == null) {
             System.out.println("Can't find default project.");
             System.exit(1);

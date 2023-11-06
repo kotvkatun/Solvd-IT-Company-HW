@@ -1,14 +1,15 @@
 package classes.project;
 
+import classes.json.JSONExternalizable;
+import classes.json.JSONManager;
 import classes.ui.Input;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Project {
+public class Project implements JSONExternalizable {
     private String projectName;
     private List<Task> taskList;
-
     public Project(String projectName) {
         this.projectName = projectName;
     }
@@ -91,5 +92,15 @@ public class Project {
     @Override
     public int hashCode() {
         return Objects.hash(projectName, taskList);
+    }
+
+    @Override
+    public boolean writeJSON() {
+        return JSONManager.saveProject(this);
+    }
+
+    @Override
+    public Project readJSON(String filename) {
+        return JSONManager.loadProject(filename);
     }
 }

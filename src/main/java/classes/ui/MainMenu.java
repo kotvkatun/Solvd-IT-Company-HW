@@ -1,7 +1,7 @@
 package classes.ui;
 
 import classes.developer.Developer;
-import classes.json.JSONLoader;
+import classes.json.JSONManager;
 import classes.project.Project;
 import classes.project.Task;
 
@@ -40,11 +40,11 @@ public class MainMenu {
         }
     }
     public static void manage(Project project) {
-        System.out.println("Add or Remove task from project?");
+        System.out.println("Add or remove task from project?");
         String addOrRemove = Input.stringConsoleInput();
-        if (addOrRemove.equals("Add")) {
+        if (addOrRemove.equals("add")) {
             project.addTaskFromInput();
-        } else if (addOrRemove.equals("Remove")) {
+        } else if (addOrRemove.equals("remove")) {
             System.out.println("Enter task index:");
             try {
                 int taskIndex = Integer.parseInt(Input.stringConsoleInput());
@@ -62,7 +62,7 @@ public class MainMenu {
     public static void open(Project project){
         System.out.println("Enter filename (without extension): ");
         String filename = Input.stringConsoleInput();
-        project = JSONLoader.loadProject(filename);
+        project = JSONManager.loadProject(filename);
         if (project == null) {
             System.out.println("Cannot load project from specified filename");
         }
