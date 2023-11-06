@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Input {
     protected static final Scanner scanner = new Scanner(System.in);
     // Method for taking user input
-    public static String consoleInput() {
+    public static String stringConsoleInput() {
         String input = "";
         // Try to scan something into the string until something is found
         while (input.isEmpty()) {

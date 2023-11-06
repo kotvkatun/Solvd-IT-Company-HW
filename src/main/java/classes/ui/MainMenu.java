@@ -1,6 +1,9 @@
 package classes.ui;
 
 import classes.developer.Developer;
+import classes.json.JSONLoader;
+import classes.project.Project;
+import classes.project.Task;
 
 import java.util.List;
 
@@ -19,8 +22,50 @@ public class MainMenu {
     public static void developerInfo(List<Developer> developerList) {
         int i = 1;
         for(Developer dev : developerList) {
-            System.out.println(i + dev.toString());
+            System.out.println(i + ". " + dev.toString());
             i++;
         }
+    }
+    public static void assign(List<Developer> developerList, List<Task> taskList) {
+        try {
+            System.out.println("Enter developer's index:");
+            int devIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
+            System.out.println("Enter task index:");
+            int taskIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
+            developerList.get(devIndex).completeTask(taskList.get(taskIndex));
+        } catch (NumberFormatException e) {
+            System.out.println("Whoops, can't parse that!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Incorrect index or task does not exist");
+        }
+    }
+    public static void manage(Project project) {
+        System.out.println("Add or Remove task from project?");
+        String addOrRemove = Input.stringConsoleInput();
+        if (addOrRemove.equals("Add")) {
+            project.addTaskFromInput();
+        } else if (addOrRemove.equals("Remove")) {
+            System.out.println("Enter task index:");
+            try {
+                int taskIndex = Integer.parseInt(Input.stringConsoleInput());
+                project.removeTask(project.getTaskList().get(taskIndex));
+                System.out.println("Removed task " + taskIndex);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Incorrect index");
+            } catch (NumberFormatException e) {
+                System.out.println("Whoops, can't parse that!");
+            }
+        } else {
+            System.out.println("Type Add or Remove to change tasks.");
+        }
+    }
+    public static void open(Project project){
+        System.out.println("Enter filename (without extension): ");
+        String filename = Input.stringConsoleInput();
+        project = JSONLoader.loadProject(filename);
+        if (project == null) {
+            System.out.println("Cannot load project from specified filename");
+        }
+        System.out.println("Loaded project " + project.getProjectName() + " from " + filename);
     }
 }

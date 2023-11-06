@@ -44,12 +44,12 @@ public class Project {
     }
     public void addTaskFromInput() {
         System.out.println("Enter new task name:");
-        String taskName = Input.consoleInput();
+        String taskName = Input.stringConsoleInput();
         Integer timeRequired = null;
         while (timeRequired == null) {
             try{
                 System.out.println("Enter time required:");
-                timeRequired = Integer.parseInt(Input.consoleInput());
+                timeRequired = Integer.parseInt(Input.stringConsoleInput());
             } catch (NumberFormatException e) {
                 System.out.println("Not an integer. Try again?");
             }
@@ -58,7 +58,7 @@ public class Project {
         BigDecimal reward = null;
         while (reward == null) {
             try {
-                reward = new BigDecimal(Input.consoleInput());
+                reward = new BigDecimal(Input.stringConsoleInput());
             } catch (NumberFormatException e) {
                 System.out.println("Incorrect format. Try separating mantissa with a dot?");
             }

@@ -5,11 +5,11 @@ import classes.project.Task;
 import java.math.BigDecimal;
 
 public class Developer extends AbstractDeveloper{
-    private Float gradeModifier;
+    private final Float GRADE_MODIFIER;
     private BigDecimal salary = new BigDecimal("0.0");
     public Developer(Grade grade, String developerName) {
         super(grade, developerName);
-        this.gradeModifier = switch (grade) {
+        this.GRADE_MODIFIER = switch (grade) {
             case JUNIOR -> 1.5f;
             case MIDDLE -> 1.0f;
             case SENIOR -> 0.5f;
@@ -24,7 +24,7 @@ public class Developer extends AbstractDeveloper{
         }
 
         BigDecimal multiplier = new BigDecimal("2");
-        if (task.getTimeRequired() * gradeModifier < this.timeAmount) {
+        if (task.getTimeRequired() * GRADE_MODIFIER < this.timeAmount) {
             salary = salary.add(task.getReward().multiply(multiplier));
         } else {
             salary = salary.add(task.getReward());
@@ -40,8 +40,8 @@ public class Developer extends AbstractDeveloper{
                 "\nSalary: " + salary.toString();
     }
 
-    public Float getGradeModifier() {
-        return gradeModifier;
+    public Float getGRADE_MODIFIER() {
+        return GRADE_MODIFIER;
     }
 
     public BigDecimal getSalary() {
