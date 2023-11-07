@@ -1,12 +1,19 @@
 package classes.developer;
 
+import classes.interfaces.Addable;
+import classes.interfaces.CreatableFromInput;
+import classes.itcompany.ITCompany;
 import classes.project.Task;
+import classes.ui.Input;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 
-public class Developer extends AbstractDeveloper{
+public class Developer extends AbstractDeveloper implements CreatableFromInput, Addable {
+    private static final Logger LOGGER = LogManager.getLogger(Developer.class);
     private final Float GRADE_MODIFIER;
-    private BigDecimal salary = new BigDecimal("0.0");
+    protected BigDecimal salary = new BigDecimal("0.0");
     public Developer(Grade grade, String developerName) {
         super(grade, developerName);
         this.GRADE_MODIFIER = switch (grade) {
@@ -34,8 +41,7 @@ public class Developer extends AbstractDeveloper{
 
     @Override
     public String toString() {
-        return "Developer" +
-                "\nGrade: " + grade +
+        return  grade + " developer" +
                 "\nName: " + developerName +
                 "\nSalary: " + salary.toString();
     }
@@ -48,4 +54,31 @@ public class Developer extends AbstractDeveloper{
         return salary;
     }
 
+    @Override
+    public Developer createFromInput() {
+        LOGGER.info("Enter developer grade");
+        Grade grade = null;
+        while(grade == null) {
+            switch(Input.stringConsoleInput().toLowerCase()) {
+                case "junior":
+                    grade = Grade.JUNIOR;
+                    break;
+                case "middle":
+                    grade = Grade.MIDDLE;
+                    break;
+                case "senior":
+                    grade = Grade.SENIOR;
+                    break;
+                default:
+                    LOGGER.info("Incorrect grade. Try 'junior', 'middle' or 'senior'");
+            }
+        }
+        LOGGER.info("Enter developer's name");
+        return new Developer(grade, Input.stringConsoleInput());
+    }
+
+    @Override
+    public void addToBaseList(ITCompany itCompany) {
+        itCompany.getDeveloperList().add(this);
+    }
 }

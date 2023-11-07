@@ -1,9 +1,17 @@
 package classes.project;
 
+import classes.interfaces.Addable;
+import classes.interfaces.CreatableFromInput;
+import classes.itcompany.ITCompany;
+import classes.ui.Input;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Task {
+public class Task implements CreatableFromInput, Addable {
+    private static final Logger LOGGER = LogManager.getLogger(Task.class);
     private String taskName;
     private final Project PROJECT;
     private Integer timeRequired;
@@ -16,7 +24,13 @@ public class Task {
         this.timeRequired = timeRequired;
         this.reward = reward;
     }
-    public Task getTask(String taskName) {
+    public Task(String taskName, Integer timeRequired, BigDecimal reward) {
+        this.taskName = taskName;
+        this.PROJECT = null;
+        this.timeRequired = timeRequired;
+        this.reward = reward;
+    }
+    public final Task getTask(String taskName) {
         if (Objects.equals(taskName, this.taskName)) {
             return this;
         } else {
@@ -70,5 +84,35 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(taskName, PROJECT, timeRequired, reward, isComplete);
+    }
+
+    @Override
+    public Task createFromInput() {
+        LOGGER.info("Enter new task name:");
+        String taskName = Input.stringConsoleInput();
+        Integer timeRequired = null;
+        while (timeRequired == null) {
+            try{
+                LOGGER.info("Enter time required:");
+                timeRequired = Integer.parseInt(Input.stringConsoleInput());
+            } catch (NumberFormatException e) {
+                LOGGER.info("Not an integer. Try again?");
+            }
+        }
+        LOGGER.info("Enter reward:");
+        BigDecimal reward = null;
+        while (reward == null) {
+            try {
+                reward = new BigDecimal(Input.stringConsoleInput());
+            } catch (NumberFormatException e) {
+                LOGGER.info("Incorrect format. Try separating mantissa with a dot?");
+            }
+        }
+        return new Task(taskName, timeRequired, reward);
+    }
+
+    @Override
+    public void addToBaseList(ITCompany itCompany) {
+        itCompany.getProject().addTask(this);
     }
 }

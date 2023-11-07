@@ -1,8 +1,11 @@
 package classes.json;
 
+import classes.interfaces.IGetJSONObject;
 import classes.project.Project;
 import classes.project.Task;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.*;
 
 import java.io.FileInputStream;
@@ -13,14 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public final class JSONManager {
+
+public final class JSONManager implements IGetJSONObject {
+    private static final Logger LOGGER = LogManager.getLogger(JSONManager.class);
     public static Project loadProject(String filename) {
         // Read json into string
         String projectstring;
         try(FileInputStream inputStream = new FileInputStream(filename + ".json")){
             projectstring = IOUtils.toString(inputStream);
         } catch (IOException e) {
-            System.out.println("File not found. Try again?");
+            LOGGER.info("File not found. Try again?");
             return null;
         }
         // Create JSONobject from said string
@@ -44,22 +49,16 @@ public final class JSONManager {
         return project;
     }
     public static boolean saveProject(Project project) {
-        JSONObject projectJSON = new JSONObject();
-        projectJSON.put("projectName", project.getProjectName());
-        JSONArray tasksJSONArray = new JSONArray();
-        for (Task task: project.getTaskList()) {
-            JSONObject taskJSONObject = new JSONObject();
-            taskJSONObject.put("taskName", task.getTaskName());
-            taskJSONObject.put("timeRequired", task.getTimeRequired());
-            taskJSONObject.put("reward", task.getReward());
-            tasksJSONArray.put(taskJSONObject);
+        if (project == null) {
+            LOGGER.info("Can't save an unopened project!");
+            return false;
         }
-        projectJSON.put("tasks", tasksJSONArray);
-        try (FileWriter fileWriter = new FileWriter(project.getProjectName())) {
-            fileWriter.write(projectJSON.toString(4));
+        JSONObject projectJSON = IGetJSONObject.getJSONObject(project);
+        try (FileWriter fileWriter = new FileWriter(project.getProjectName() + ".json")) {
+            fileWriter.write(projectJSON.toString(2));
             return true;
         } catch (IOException e) {
-            System.out.println("Cannot write to file. Check file/project name and try again.");
+            LOGGER.info("Cannot write to file. Check file/project name and try again.");
             return false;
         }
     }

@@ -1,71 +1,104 @@
 package classes.ui;
 
 import classes.developer.Developer;
+import classes.itcompany.ITCompany;
 import classes.json.JSONManager;
 import classes.project.Project;
 import classes.project.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class MainMenu {
+    private static final Logger LOGGER = LogManager.getLogger(MainMenu.class);
     public static void showMenu() {
-        System.out.println("""
+        LOGGER.info("""
                 ----------------------------------
                  Available commands:             \s
-                 1. project - Show project info\s
-                 2. developer - Show developer info\s
-                 3. assign - Assign tasks to developers\s
-                 4. manage - Add or remove tasks from a project\s
-                 5. open - Load an existing project from a file\s
+                 - project - Show project info\s
+                 - developer - Show developer info\s
+                 - assign - Assign tasks to developers\s
+                 - manage - Add or remove tasks from a project\s
+                 - open - Load an existing project from a file\s
+                 - save - Save current project to a file (will keep project's name)\s
                  exit - Exit application""");
+    }
+    public static void projectInfo(Project project){
+        if (project == null) {
+            LOGGER.info("No project loaded. Please use 'open' to open a new project.");
+            return;
+        }
+        LOGGER.info(project.toString());
     }
     public static void developerInfo(List<Developer> developerList) {
         int i = 1;
         for(Developer dev : developerList) {
-            System.out.println(i + ". " + dev.toString());
+            LOGGER.info(i + ". " + dev.toString());
             i++;
         }
     }
     public static void assign(List<Developer> developerList, List<Task> taskList) {
+        if (taskList == null) {
+            LOGGER.info("No project loaded. Please use 'open' to open a new project.");
+            return;
+        }
         try {
-            System.out.println("Enter developer's index:");
+            LOGGER.info("Enter developer's index:");
             int devIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
-            System.out.println("Enter task index:");
+            LOGGER.info("Enter task index:");
             int taskIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
             developerList.get(devIndex).completeTask(taskList.get(taskIndex));
         } catch (NumberFormatException e) {
-            System.out.println("Whoops, can't parse that!");
+            LOGGER.info("Whoops, can't parse that!");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect index or task does not exist");
+            LOGGER.info("Incorrect index or task does not exist");
         }
     }
     public static void manage(Project project) {
-        System.out.println("Add or remove task from project?");
+        if (project == null) {
+            LOGGER.info("No project loaded. Please use 'open' to open a new project.");
+            return;
+        }
+        LOGGER.info("Add or remove task from project?");
         String addOrRemove = Input.stringConsoleInput();
         if (addOrRemove.equals("add")) {
             project.addTaskFromInput();
         } else if (addOrRemove.equals("remove")) {
-            System.out.println("Enter task index:");
+            LOGGER.info(project);
+            LOGGER.info("Enter task index:");
             try {
                 int taskIndex = Integer.parseInt(Input.stringConsoleInput());
                 project.removeTask(project.getTaskList().get(taskIndex));
-                System.out.println("Removed task " + taskIndex);
+                LOGGER.info("Removed task " + taskIndex);
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Incorrect index");
+                LOGGER.info("Incorrect index");
             } catch (NumberFormatException e) {
-                System.out.println("Whoops, can't parse that!");
+                LOGGER.info("Whoops, can't parse that!");
             }
         } else {
-            System.out.println("Type Add or Remove to change tasks.");
+            LOGGER.info("Type Add or Remove to change tasks.");
         }
     }
-    public static void open(Project project){
-        System.out.println("Enter filename (without extension): ");
+    public static void open(ITCompany itCompany){
+        LOGGER.info("Enter filename (without extension): ");
         String filename = Input.stringConsoleInput();
-        project = JSONManager.loadProject(filename);
-        if (project == null) {
-            System.out.println("Cannot load project from specified filename");
+        itCompany.setProject(JSONManager.loadProject(filename));
+        if (itCompany.getProject() == null) {
+            LOGGER.info("Cannot load project from specified filename");
+            return;
         }
-        System.out.println("Loaded project " + project.getProjectName() + " from " + filename);
+        LOGGER.info("Loaded project " + itCompany.getProject() + " from " + filename);
+    }
+    public static void save(Project project) {
+        try {
+            if (project.writeJSON()) {
+                LOGGER.info("Saved project to " + project.getProjectName() + ".json");
+            } else {
+                LOGGER.info("Saving aborted.");
+            }
+        } catch (NullPointerException e) {
+            LOGGER.info("No project opened. Try opening one?");
+        }
     }
 }

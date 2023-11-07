@@ -1,13 +1,17 @@
 package classes.project;
 
-import classes.json.JSONExternalizable;
+import classes.interfaces.Clearable;
+import classes.interfaces.JSONExternalizable;
 import classes.json.JSONManager;
 import classes.ui.Input;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Project implements JSONExternalizable {
+public class Project implements JSONExternalizable, Clearable {
+    public static final Logger LOGGER = LogManager.getLogger(Project.class);
     private String projectName;
     private List<Task> taskList;
     public Project(String projectName) {
@@ -44,24 +48,24 @@ public class Project implements JSONExternalizable {
         this.taskList.remove(task);
     }
     public void addTaskFromInput() {
-        System.out.println("Enter new task name:");
+        LOGGER.info("Enter new task name:");
         String taskName = Input.stringConsoleInput();
         Integer timeRequired = null;
         while (timeRequired == null) {
             try{
-                System.out.println("Enter time required:");
+                LOGGER.info("Enter time required:");
                 timeRequired = Integer.parseInt(Input.stringConsoleInput());
             } catch (NumberFormatException e) {
-                System.out.println("Not an integer. Try again?");
+                LOGGER.info("Not an integer. Try again?");
             }
         }
-        System.out.println("Enter reward:");
+        LOGGER.info("Enter reward:");
         BigDecimal reward = null;
         while (reward == null) {
             try {
                 reward = new BigDecimal(Input.stringConsoleInput());
             } catch (NumberFormatException e) {
-                System.out.println("Incorrect format. Try separating mantissa with a dot?");
+                LOGGER.info("Incorrect format. Try separating mantissa with a dot?");
             }
         }
         this.addTask(new Task(taskName, this, timeRequired, reward));
@@ -102,5 +106,10 @@ public class Project implements JSONExternalizable {
     @Override
     public Project readJSON(String filename) {
         return JSONManager.loadProject(filename);
+    }
+
+    @Override
+    public void clear() {
+        this.getTaskList().clear();
     }
 }

@@ -16,7 +16,6 @@ public class Input {
                 System.out.println("Incorrect input. Please try again");
             }
         }
-        scanner.close();
         return input;
     }
 }

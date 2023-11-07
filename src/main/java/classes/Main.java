@@ -1,46 +1,43 @@
 package classes;
 
-import classes.developer.Developer;
-import classes.initialiser.DeveloperInitialiser;
-import classes.json.JSONManager;
-import classes.project.Project;
+import classes.itcompany.ITCompany;
 import classes.ui.Input;
 import classes.ui.MainMenu;
-
-
-import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private static final Logger LOGGER;
+    static {
+        LOGGER = LogManager.getLogger(Main.class);
+    }
     public static void main(String[] args) {
-        List<Developer> developerList = DeveloperInitialiser.initialiseDeveloperList();
-        Project project = JSONManager.loadProject("project1");
-        if (project == null) {
-            System.out.println("Can't find default project.");
-            System.exit(1);
-        }
+        ITCompany itCompany = ITCompany.initialiseITCompany();
         while (true) {
             MainMenu.showMenu();
-            String command = Input.stringConsoleInput();
-            switch (command) {
+            switch (Input.stringConsoleInput()) {
                 case "project":
-                    System.out.println(project.toString());
+                    MainMenu.projectInfo(itCompany.getProject());
                     break;
                 case "developer":
-                    MainMenu.developerInfo(developerList);
+                    MainMenu.developerInfo(itCompany.getDeveloperList());
                     break;
                 case "assign":
-                    MainMenu.assign(developerList, project.getTaskList());
+                    MainMenu.assign(itCompany.getDeveloperList(), itCompany.getProject().getTaskList());
                     break;
                 case "manage":
-                    MainMenu.manage(project);
+                    MainMenu.manage(itCompany.getProject());
                     break;
                 case "open":
-                    MainMenu.open(project);
+                    MainMenu.open(itCompany);
+                    break;
+                case "save":
+                    MainMenu.save(itCompany.getProject());
                     break;
                 case "exit":
                     System.exit(0);
                 default:
-                    System.out.println("Wrong command.");
+                    LOGGER.info("Wrong command.");
                     break;
             }
         }
