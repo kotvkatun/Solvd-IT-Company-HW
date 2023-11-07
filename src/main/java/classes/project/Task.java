@@ -30,13 +30,6 @@ public class Task implements CreatableFromInput, Addable {
         this.timeRequired = timeRequired;
         this.reward = reward;
     }
-    public final Task getTask(String taskName) {
-        if (Objects.equals(taskName, this.taskName)) {
-            return this;
-        } else {
-            return null;
-        }
-    }
     public String getTaskName() {
         return taskName;
     }
@@ -110,7 +103,11 @@ public class Task implements CreatableFromInput, Addable {
         }
         return new Task(taskName, timeRequired, reward);
     }
-
+    public Task createFromInput(boolean isComplete) {
+        Task task = this.createFromInput();
+        task.setComplete(isComplete);
+        return task;
+    }
     @Override
     public void addToBaseList(ITCompany itCompany) {
         itCompany.getProject().addTask(this);

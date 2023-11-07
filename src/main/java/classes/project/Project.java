@@ -47,6 +47,13 @@ public class Project implements JSONExternalizable, Clearable {
     public void removeTask(Task task) {
         this.taskList.remove(task);
     }
+    public void removeTask(String taskName){
+        if (this.getTask(taskName) != null) {
+            this.taskList.remove(this.getTask(taskName));
+        } else {
+            LOGGER.info("No such task.");
+        }
+    }
     public void addTaskFromInput() {
         LOGGER.info("Enter new task name:");
         String taskName = Input.stringConsoleInput();
@@ -84,7 +91,14 @@ public class Project implements JSONExternalizable, Clearable {
     public void setTaskList(List<Task> taskList) {
         this.taskList = taskList;
     }
-
+    public Task getTask(String taskName) {
+        for(Task task: taskList) {
+            if(Objects.equals(task.getTaskName(), taskName)){
+                return task;
+            }
+        }
+        return null;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

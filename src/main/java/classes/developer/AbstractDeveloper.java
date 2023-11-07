@@ -9,7 +9,6 @@ public abstract class AbstractDeveloper {
     protected Grade grade;
     protected String developerName;
     protected final Integer timeAmount = 180;
-    private BigDecimal developerSalary = new BigDecimal("0.0");
     public AbstractDeveloper(Grade grade, String developerName) {
         this.grade = grade;
         this.developerName = developerName;
@@ -21,11 +20,11 @@ public abstract class AbstractDeveloper {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractDeveloper that = (AbstractDeveloper) o;
-        return grade == that.grade && Objects.equals(developerName, that.developerName) && Objects.equals(developerSalary, that.developerSalary);
+        return grade == that.grade && Objects.equals(developerName, that.developerName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(grade, developerName, developerSalary);
+        return Objects.hash(grade, developerName);
     }
 }

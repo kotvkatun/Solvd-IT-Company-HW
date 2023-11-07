@@ -38,7 +38,6 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
         }
         task.setComplete(true);
     }
-
     @Override
     public String toString() {
         return  grade + " developer" +
