@@ -2,7 +2,6 @@ package classes.developer;
 
 import classes.project.Task;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public abstract class AbstractDeveloper {

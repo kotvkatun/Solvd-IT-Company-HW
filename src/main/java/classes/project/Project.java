@@ -1,5 +1,9 @@
 package classes.project;
 
+import classes.exceptions.EmptyTaskListException;
+import classes.exceptions.IncorrectProjectNameException;
+import classes.exceptions.NegativeRewardException;
+import classes.exceptions.NegativeTimeRequiredException;
 import classes.interfaces.Clearable;
 import classes.interfaces.JSONExternalizable;
 import classes.json.JSONManager;
@@ -44,7 +48,10 @@ public class Project implements JSONExternalizable, Clearable {
         this.taskList.add(task);
     }
     // and for removing tasks
-    public void removeTask(Task task) {
+    public void removeTask(Task task) throws EmptyTaskListException {
+        if (this.taskList.isEmpty()) {
+            throw new EmptyTaskListException("Cannot remove tasks from an empty list!");
+        }
         this.taskList.remove(task);
     }
     public void removeTask(String taskName){
@@ -55,15 +62,23 @@ public class Project implements JSONExternalizable, Clearable {
         }
     }
     public void addTaskFromInput() {
-        LOGGER.info("Enter new task name:");
-        String taskName = Input.stringConsoleInput();
-        Integer timeRequired = null;
-        while (timeRequired == null) {
+        LOGGER.info("Enter new task name (cannot be blank):");
+        String taskName = "";
+        while (taskName.isBlank()) {
+            taskName = Input.stringConsoleInput();
+        }
+        int timeRequired = 0;
+        while (timeRequired <= 0) {
             try{
                 LOGGER.info("Enter time required:");
                 timeRequired = Integer.parseInt(Input.stringConsoleInput());
+                if (timeRequired <= 0) {
+                    throw new NegativeTimeRequiredException("Negative or zero time set for a task.");
+                }
             } catch (NumberFormatException e) {
                 LOGGER.info("Not an integer. Try again?");
+            } catch (NegativeTimeRequiredException e) {
+                LOGGER.info("Tasks must have positive non-zero time requirement!");
             }
         }
         LOGGER.info("Enter reward:");
@@ -71,8 +86,14 @@ public class Project implements JSONExternalizable, Clearable {
         while (reward == null) {
             try {
                 reward = new BigDecimal(Input.stringConsoleInput());
+                if (reward.compareTo(BigDecimal.valueOf(0)) < 0) {
+                    throw new NegativeRewardException("Reward must be non-negative");
+                }
             } catch (NumberFormatException e) {
                 LOGGER.info("Incorrect format. Try separating mantissa with a dot?");
+            } catch (NegativeRewardException e) {
+                reward = null;
+                LOGGER.info("Reward cannot be negative");
             }
         }
         this.addTask(new Task(taskName, this, timeRequired, reward));
@@ -114,7 +135,21 @@ public class Project implements JSONExternalizable, Clearable {
 
     @Override
     public boolean writeJSON() {
-        return JSONManager.saveProject(this);
+        try {
+            return JSONManager.saveProject(this);
+        } catch (IncorrectProjectNameException e){
+            while(true){
+                LOGGER.info("Project name contains whitespace and will be saved using '_'");
+                LOGGER.info("Choose different filename? (y/n)");
+                String response = Input.stringConsoleInput().toLowerCase();
+                if (response.equals("y")) {
+                    LOGGER.info("Enter new filename (in full): ");
+                    return JSONManager.saveProject(this, Input.stringConsoleInput(true));
+                } else if (response.equals("n")) {
+                    return JSONManager.saveProject(this, true);
+                }
+            }
+        }
     }
 
     @Override

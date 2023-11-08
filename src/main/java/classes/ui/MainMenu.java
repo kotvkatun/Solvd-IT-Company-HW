@@ -1,6 +1,7 @@
 package classes.ui;
 
 import classes.developer.Developer;
+import classes.exceptions.EmptyTaskListException;
 import classes.itcompany.ITCompany;
 import classes.json.JSONManager;
 import classes.project.Project;
@@ -75,6 +76,8 @@ public class MainMenu {
                 LOGGER.info("Incorrect index");
             } catch (NumberFormatException e) {
                 LOGGER.info("Whoops, can't parse that!");
+            } catch (EmptyTaskListException e) {
+                LOGGER.info("Task list is empty, nothing to remove");
             }
         } else {
             LOGGER.info("Type Add or Remove to change tasks.");
@@ -93,7 +96,7 @@ public class MainMenu {
     public static void save(Project project) {
         try {
             if (project.writeJSON()) {
-                LOGGER.info("Saved project to " + project.getProjectName() + ".json");
+                LOGGER.info("Saved project successfully.");
             } else {
                 LOGGER.info("Saving aborted.");
             }

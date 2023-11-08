@@ -12,15 +12,9 @@ import java.math.BigDecimal;
 
 public class Developer extends AbstractDeveloper implements CreatableFromInput, Addable {
     private static final Logger LOGGER = LogManager.getLogger(Developer.class);
-    private final Float GRADE_MODIFIER;
     protected BigDecimal salary = new BigDecimal("0.0");
     public Developer(Grade grade, String developerName) {
         super(grade, developerName);
-        this.GRADE_MODIFIER = switch (grade) {
-            case JUNIOR -> 1.5f;
-            case MIDDLE -> 1.0f;
-            case SENIOR -> 0.5f;
-        };
     }
 
     @Override
@@ -31,7 +25,7 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
         }
 
         BigDecimal multiplier = new BigDecimal("2");
-        if (task.getTimeRequired() * GRADE_MODIFIER < this.timeAmount) {
+        if (task.getTimeRequired() * grade.GRADE_MODIFIER < this.timeAmount) {
             salary = salary.add(task.getReward().multiply(multiplier));
         } else {
             salary = salary.add(task.getReward());
@@ -46,7 +40,7 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
     }
 
     public Float getGRADE_MODIFIER() {
-        return GRADE_MODIFIER;
+        return grade.GRADE_MODIFIER;
     }
 
     public BigDecimal getSalary() {
