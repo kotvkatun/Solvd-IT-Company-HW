@@ -16,6 +16,7 @@ public class Input {
         // Try to scan something into the string until something is found
         while (input.isBlank()) {
             try {
+                System.out.print("➡\uFE0F");
                 input = scanner.nextLine().toLowerCase();
             } catch (NoSuchElementException e) {
                 LOGGER.info("Incorrect input. Please try again");
@@ -24,16 +25,10 @@ public class Input {
         return input;
     }
     public static String stringConsoleInput(boolean tryUntilAllowedAsFilename) {
-        Scanner scanner = new Scanner(System.in);
-        String input = "";
+        String input;
         // Try to scan something into the string until it fits filename regex
         while (true) {
-            try {
-                input = scanner.nextLine();
-            } catch (NoSuchElementException e) {
-                LOGGER.info("Incorrect input. Please try again");
-                continue;
-            }
+            input = Input.stringConsoleInput();
             if (!input.matches("^[\\w-]+\\.[A-Za-z]{4}$")) {
                 LOGGER.info("Please enter a valid filename");
             } else {

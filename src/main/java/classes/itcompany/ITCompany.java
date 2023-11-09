@@ -1,26 +1,24 @@
 package classes.itcompany;
 
-import classes.developer.Contractor;
+import classes.developer.AbstractDeveloper;
 import classes.developer.Developer;
 import classes.initialiser.DeveloperInitialiser;
 import classes.interfaces.Clearable;
 import classes.project.Project;
 
-import java.util.Iterator;
 import java.util.List;
 
 public final class ITCompany implements Clearable {
     private String itCompanyName;
     private Project project;
     private List<Developer> developerList;
-    private List<Contractor> contractorList;
 
     public ITCompany (String itCompanyName) {
         this.itCompanyName = itCompanyName;
     }
-    public static ITCompany initialiseITCompany() {
+    public ITCompany initialiseITCompany() {
         ITCompany itCompany = new ITCompany("ExampleLLC");
-        itCompany.setDeveloperList(DeveloperInitialiser.initialiseDeveloperList());
+        itCompany.setDeveloperList(DeveloperInitialiser.initialiseDeveloperList(this));
         itCompany.setProject(null);
         return itCompany;
     }
@@ -48,19 +46,14 @@ public final class ITCompany implements Clearable {
     public void setDeveloperList(List<Developer> developerList) {
         this.developerList = developerList;
     }
-
-    public List<Contractor> getContractorList() {
-        return contractorList;
+    public void switchToNextMonth(){
+        developerList.forEach(AbstractDeveloper::refreshTime);
     }
-
-    public void setContractorList(List<Contractor> contractorList) {
-        this.contractorList = contractorList;
+    public void optimiseForFactor(String factor) {
     }
-
     @Override
     public void clear() {
         this.getDeveloperList().clear();
-        this.getContractorList().clear();
         this.setProject(null);
     }
 }

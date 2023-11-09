@@ -23,11 +23,12 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
             System.out.println("This task has already been completed!");
             return;
         }
-
         BigDecimal multiplier = new BigDecimal("2");
-        if (task.getTimeRequired() * grade.GRADE_MODIFIER < this.timeAmount) {
+        if (task.getTimeRequired() * getGRADE_MODIFIER() > this.timeAmount) {
+            this.timeAmount = 0;
             salary = salary.add(task.getReward().multiply(multiplier));
         } else {
+            this.timeAmount -= task.getTimeRequired();
             salary = salary.add(task.getReward());
         }
         task.setComplete(true);
@@ -36,7 +37,8 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
     public String toString() {
         return  grade + " developer" +
                 "\nName: " + developerName +
-                "\nSalary: " + salary.toString();
+                "\nSalary: " + salary.toString() +
+                "\nTime left this month: " + timeAmount;
     }
 
     public Float getGRADE_MODIFIER() {

@@ -5,14 +5,27 @@ import classes.project.Task;
 import java.util.Objects;
 
 public abstract class AbstractDeveloper {
+    private final int TIME_NORM = 180;
     protected Grade grade;
     protected String developerName;
-    protected final Integer timeAmount = 180;
+    protected Integer timeAmount = TIME_NORM;
     public AbstractDeveloper(Grade grade, String developerName) {
         this.grade = grade;
         this.developerName = developerName;
     }
     public abstract void completeTask(Task task);
+
+    public void refreshTime () {
+        this.timeAmount = TIME_NORM;
+    }
+
+    public Integer getTimeAmount() {
+        return timeAmount;
+    }
+
+    public void setTimeAmount(Integer timeAmount) {
+        this.timeAmount = timeAmount;
+    }
 
     @Override
     public boolean equals(Object o) {
