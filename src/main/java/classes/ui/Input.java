@@ -1,6 +1,5 @@
 package classes.ui;
 
-import classes.project.Project;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +8,7 @@ import java.util.Scanner;
 
 public class Input {
     public static final Logger LOGGER = LogManager.getLogger(Input.class);
+
     // Method for taking user input
     public static String stringConsoleInput() {
         Scanner scanner = new Scanner(System.in);
@@ -16,7 +16,6 @@ public class Input {
         // Try to scan something into the string until something is found
         while (input.isBlank()) {
             try {
-                System.out.print("➡\uFE0F");
                 input = scanner.nextLine().toLowerCase();
             } catch (NoSuchElementException e) {
                 LOGGER.info("Incorrect input. Please try again");
@@ -24,6 +23,7 @@ public class Input {
         }
         return input;
     }
+
     public static String stringConsoleInput(boolean tryUntilAllowedAsFilename) {
         String input;
         // Try to scan something into the string until it fits filename regex

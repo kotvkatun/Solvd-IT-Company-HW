@@ -1,14 +1,13 @@
-package classes.initialiser;
+package classes.initializer;
 
 import classes.developer.Developer;
 import classes.developer.Grade;
-import classes.itcompany.ITCompany;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeveloperInitialiser {
-    public static List<Developer> initialiseDeveloperList(ITCompany itCompany) {
+public class DeveloperInitializer {
+    public static List<Developer> initializeDeveloperList() {
         Developer junVasya = new Developer(Grade.JUNIOR, "Vasya Pupkin");
         Developer midPetya = new Developer(Grade.MIDDLE, "Petya Petrov");
         Developer senPomidor = new Developer(Grade.SENIOR, "Senior Pomidor");

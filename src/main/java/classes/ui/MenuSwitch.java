@@ -6,14 +6,14 @@ import org.apache.logging.log4j.Logger;
 
 public final class MenuSwitch {
     private static final Logger LOGGER;
+
     static {
         LOGGER = LogManager.getLogger(MenuSwitch.class);
     }
-    private final ITCompany ITCOMPANY;
-    public MenuSwitch (ITCompany itCompany) {
-        this.ITCOMPANY = itCompany.initialiseITCompany();
-    }
-    public void mainMenuSwitch () {
+
+    private final ITCompany ITCOMPANY = new ITCompany("ExampleLLC");
+
+    public void mainMenuSwitch() {
         while (true) {
             MainMenu.showMenu();
             switch (Input.stringConsoleInput()) {

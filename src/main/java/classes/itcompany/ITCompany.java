@@ -2,7 +2,7 @@ package classes.itcompany;
 
 import classes.developer.AbstractDeveloper;
 import classes.developer.Developer;
-import classes.initialiser.DeveloperInitialiser;
+import classes.initializer.DeveloperInitializer;
 import classes.interfaces.Addable;
 import classes.interfaces.Clearable;
 import classes.project.Project;
@@ -13,17 +13,14 @@ import java.util.List;
 public final class ITCompany implements Clearable, Addable {
     private String itCompanyName;
     private Project project;
-    private List<Developer> developerList;
+    private List<Developer> developerList = ITCompany.initializeDeveloperList();
 
     public ITCompany(String itCompanyName) {
         this.itCompanyName = itCompanyName;
     }
 
-    public ITCompany initialiseITCompany() {
-        ITCompany itCompany = new ITCompany("ExampleLLC");
-        itCompany.setDeveloperList(DeveloperInitialiser.initialiseDeveloperList(this));
-        itCompany.setProject(null);
-        return itCompany;
+    private static List<Developer> initializeDeveloperList() {
+        return DeveloperInitializer.initializeDeveloperList();
     }
 
     public String getItCompanyName() {
