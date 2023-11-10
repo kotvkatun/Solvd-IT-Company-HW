@@ -1,7 +1,10 @@
 package classes.interfaces;
 
-import classes.itcompany.ITCompany;
+import classes.developer.Developer;
+import classes.project.Task;
 
 public interface Addable {
-    void addToBaseList(ITCompany itCompany);
+    void addToBaseList(Developer developer);
+
+    void addToBaseList(Task task);
 }

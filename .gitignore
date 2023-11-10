@@ -42,4 +42,5 @@ build/
 *.json
 
 ## App logs ##
+/log/
 *.log

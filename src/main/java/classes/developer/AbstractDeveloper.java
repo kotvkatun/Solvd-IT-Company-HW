@@ -9,6 +9,7 @@ public abstract class AbstractDeveloper {
     protected Grade grade;
     protected String developerName;
     protected Integer timeAmount = TIME_NORM;
+    public AbstractDeveloper(){}
     public AbstractDeveloper(Grade grade, String developerName) {
         this.grade = grade;
         this.developerName = developerName;

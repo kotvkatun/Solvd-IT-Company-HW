@@ -5,57 +5,67 @@ import classes.exceptions.EmptyTaskListException;
 import classes.itcompany.ITCompany;
 import classes.json.JSONManager;
 import classes.project.Project;
-import classes.project.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class MainMenu {
+public final class MainMenu {
     private static final Logger LOGGER = LogManager.getLogger(MainMenu.class);
+    private static int monthsPassed = 0;
+
     public static void showMenu() {
+        LOGGER.info("Months passed: " + MainMenu.monthsPassed);
         LOGGER.info("""
                 ----------------------------------
                  Available commands:             \s
-                 - project - Show project info\s
-                 - developer - Show developer info\s
-                 - assign - Assign tasks to developers\s
-                 - manage - Add or remove tasks from a project\s
-                 - open - Load an existing project from a file\s
-                 - save - Save current project to a file (will keep project's name)\s
+                 📒 project - Show project info\s
+                 👨🏻‍💻 developer - Show developer info\s
+                 👉🏻 assign - Assign tasks to developers\s
+                 🛠 manage - Add or remove tasks from a project\s
+                 🧹 clear - Remove all current tasks from selected project\s
+                 🗓 next - Set time to next month and refresh developers time limits.\s
+                 💽 open - Load an existing project from a file\s
+                 💾 save - Save current project to a file (will keep project name)\s
                  exit - Exit application""");
     }
-    public static void projectInfo(Project project){
+
+    public static void projectInfo(Project project) {
         if (project == null) {
             LOGGER.info("No project loaded. Please use 'open' to open a new project.");
             return;
         }
         LOGGER.info(project.toString());
     }
+
     public static void developerInfo(List<Developer> developerList) {
         int i = 1;
-        for(Developer dev : developerList) {
+        for (Developer dev : developerList) {
             LOGGER.info(i + ". " + dev.toString());
             i++;
         }
     }
-    public static void assign(List<Developer> developerList, List<Task> taskList) {
-        if (taskList == null) {
+
+    public static void assign(List<Developer> developerList, Project project) {
+        if (project == null) {
             LOGGER.info("No project loaded. Please use 'open' to open a new project.");
             return;
         }
         try {
+            MainMenu.developerInfo(developerList);
             LOGGER.info("Enter developer's index:");
             int devIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
+            MainMenu.projectInfo(project);
             LOGGER.info("Enter task index:");
             int taskIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
-            developerList.get(devIndex).completeTask(taskList.get(taskIndex));
+            developerList.get(devIndex).completeTask(project.getTaskList().get(taskIndex));
         } catch (NumberFormatException e) {
             LOGGER.info("Whoops, can't parse that!");
         } catch (IndexOutOfBoundsException e) {
             LOGGER.info("Incorrect index or task does not exist");
         }
     }
+
     public static void manage(Project project) {
         if (project == null) {
             LOGGER.info("No project loaded. Please use 'open' to open a new project.");
@@ -83,7 +93,8 @@ public class MainMenu {
             LOGGER.info("Type Add or Remove to change tasks.");
         }
     }
-    public static void open(ITCompany itCompany){
+
+    public static void open(ITCompany itCompany) {
         LOGGER.info("Enter filename (without extension): ");
         String filename = Input.stringConsoleInput();
         itCompany.setProject(JSONManager.loadProject(filename));
@@ -93,6 +104,7 @@ public class MainMenu {
         }
         LOGGER.info("Loaded project " + itCompany.getProject() + " from " + filename);
     }
+
     public static void save(Project project) {
         try {
             if (project.writeJSON()) {
@@ -103,5 +115,20 @@ public class MainMenu {
         } catch (NullPointerException e) {
             LOGGER.info("No project opened. Try opening one?");
         }
+    }
+
+    public static void clearProject(Project project) {
+        if (project == null) {
+            LOGGER.info("No project loaded!");
+            return;
+        }
+        project.clear();
+        LOGGER.info("Project " + project.getProjectName() + " cleared successfully.");
+    }
+
+    public static void nextMonth(ITCompany itCompany) {
+        itCompany.switchToNextMonth();
+        MainMenu.monthsPassed++;
+        MainMenu.showMenu();
     }
 }

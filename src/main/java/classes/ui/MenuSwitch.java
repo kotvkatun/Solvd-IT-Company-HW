@@ -1,11 +1,10 @@
 package classes.ui;
 
-import classes.Main;
 import classes.itcompany.ITCompany;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class MenuSwitch {
+public final class MenuSwitch {
     private static final Logger LOGGER;
     static {
         LOGGER = LogManager.getLogger(MenuSwitch.class);
@@ -25,10 +24,16 @@ public class MenuSwitch {
                     MainMenu.developerInfo(ITCOMPANY.getDeveloperList());
                     break;
                 case "assign":
-                    MainMenu.assign(ITCOMPANY.getDeveloperList(), ITCOMPANY.getProject().getTaskList());
+                    MainMenu.assign(ITCOMPANY.getDeveloperList(), ITCOMPANY.getProject());
+                    break;
+                case "next":
+                    MainMenu.nextMonth(ITCOMPANY);
                     break;
                 case "manage":
                     MainMenu.manage(ITCOMPANY.getProject());
+                    break;
+                case "clear":
+                    MainMenu.clearProject(ITCOMPANY.getProject());
                     break;
                 case "open":
                     MainMenu.open(ITCOMPANY);

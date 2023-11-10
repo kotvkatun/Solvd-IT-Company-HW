@@ -3,19 +3,22 @@ package classes.itcompany;
 import classes.developer.AbstractDeveloper;
 import classes.developer.Developer;
 import classes.initialiser.DeveloperInitialiser;
+import classes.interfaces.Addable;
 import classes.interfaces.Clearable;
 import classes.project.Project;
+import classes.project.Task;
 
 import java.util.List;
 
-public final class ITCompany implements Clearable {
+public final class ITCompany implements Clearable, Addable {
     private String itCompanyName;
     private Project project;
     private List<Developer> developerList;
 
-    public ITCompany (String itCompanyName) {
+    public ITCompany(String itCompanyName) {
         this.itCompanyName = itCompanyName;
     }
+
     public ITCompany initialiseITCompany() {
         ITCompany itCompany = new ITCompany("ExampleLLC");
         itCompany.setDeveloperList(DeveloperInitialiser.initialiseDeveloperList(this));
@@ -46,14 +49,24 @@ public final class ITCompany implements Clearable {
     public void setDeveloperList(List<Developer> developerList) {
         this.developerList = developerList;
     }
-    public void switchToNextMonth(){
+
+    public void switchToNextMonth() {
         developerList.forEach(AbstractDeveloper::refreshTime);
     }
-    public void optimiseForFactor(String factor) {
-    }
+
     @Override
     public void clear() {
         this.getDeveloperList().clear();
         this.setProject(null);
+    }
+
+    @Override
+    public void addToBaseList(Developer developer) {
+        this.developerList.add(developer);
+    }
+
+    @Override
+    public void addToBaseList(Task task) {
+        this.getProject().getTaskList().add(task);
     }
 }

@@ -1,8 +1,6 @@
 package classes.developer;
 
-import classes.interfaces.Addable;
 import classes.interfaces.CreatableFromInput;
-import classes.itcompany.ITCompany;
 import classes.project.Task;
 import classes.ui.Input;
 import org.apache.logging.log4j.LogManager;
@@ -10,9 +8,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 
-public class Developer extends AbstractDeveloper implements CreatableFromInput, Addable {
+public class Developer extends AbstractDeveloper implements CreatableFromInput {
     private static final Logger LOGGER = LogManager.getLogger(Developer.class);
+    private static final BigDecimal DOUBLE = new BigDecimal(2);
     protected BigDecimal salary = new BigDecimal("0.0");
+
     public Developer(Grade grade, String developerName) {
         super(grade, developerName);
     }
@@ -23,19 +23,19 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
             System.out.println("This task has already been completed!");
             return;
         }
-        BigDecimal multiplier = new BigDecimal("2");
         if (task.getTimeRequired() * getGRADE_MODIFIER() > this.timeAmount) {
             this.timeAmount = 0;
-            salary = salary.add(task.getReward().multiply(multiplier));
+            salary = salary.add(task.getReward().multiply(DOUBLE));
         } else {
             this.timeAmount -= task.getTimeRequired();
             salary = salary.add(task.getReward());
         }
         task.setComplete(true);
     }
+
     @Override
     public String toString() {
-        return  grade + " developer" +
+        return grade + " developer" +
                 "\nName: " + developerName +
                 "\nSalary: " + salary.toString() +
                 "\nTime left this month: " + timeAmount;
@@ -53,8 +53,8 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
     public Developer createFromInput() {
         LOGGER.info("Enter developer grade");
         Grade grade = null;
-        while(grade == null) {
-            switch(Input.stringConsoleInput().toLowerCase()) {
+        while (grade == null) {
+            switch (Input.stringConsoleInput().toLowerCase()) {
                 case "junior":
                     grade = Grade.JUNIOR;
                     break;
@@ -70,10 +70,5 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput, 
         }
         LOGGER.info("Enter developer's name");
         return new Developer(grade, Input.stringConsoleInput());
-    }
-
-    @Override
-    public void addToBaseList(ITCompany itCompany) {
-        itCompany.getDeveloperList().add(this);
     }
 }

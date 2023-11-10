@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Task implements CreatableFromInput, Addable {
+public class Task implements CreatableFromInput {
     private static final Logger LOGGER = LogManager.getLogger(Task.class);
     private String taskName;
     private final Project PROJECT;
@@ -107,9 +107,5 @@ public class Task implements CreatableFromInput, Addable {
         Task task = this.createFromInput();
         task.setComplete(isComplete);
         return task;
-    }
-    @Override
-    public void addToBaseList(ITCompany itCompany) {
-        itCompany.getProject().addTask(this);
     }
 }
