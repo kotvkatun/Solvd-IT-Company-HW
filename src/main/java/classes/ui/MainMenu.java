@@ -8,6 +8,7 @@ import classes.project.Project;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
 
 public final class MainMenu {
@@ -24,15 +25,23 @@ public final class MainMenu {
                  👉🏻 assign - Assign tasks to developers\s
                  🛠 manage - Add or remove tasks from a project\s
                  🧹 clear - Remove all current tasks from selected project\s
+                 📜 todo - Get a list of tasks to do.\s
                  🗓 next - Set time to next month and refresh developers time limits.\s
                  💽 open - Load an existing project from a file\s
                  💾 save - Save current project to a file (will keep project name)\s
                  exit - Exit application""");
     }
 
-    public static void projectInfo(Project project) {
+    public static boolean projectIsNull(Project project) {
         if (project == null) {
             LOGGER.info("No project loaded. Please use 'open' to open a new project.");
+            return true;
+        }
+        return false;
+    }
+
+    public static void projectInfo(Project project) {
+        if (projectIsNull(project)) {
             return;
         }
         LOGGER.info(project.toString());
@@ -47,8 +56,7 @@ public final class MainMenu {
     }
 
     public static void assign(List<Developer> developerList, Project project) {
-        if (project == null) {
-            LOGGER.info("No project loaded. Please use 'open' to open a new project.");
+        if (projectIsNull(project)) {
             return;
         }
         try {
@@ -67,8 +75,7 @@ public final class MainMenu {
     }
 
     public static void manage(Project project) {
-        if (project == null) {
-            LOGGER.info("No project loaded. Please use 'open' to open a new project.");
+        if (projectIsNull(project)) {
             return;
         }
         LOGGER.info("Add or remove task from project?");
@@ -118,8 +125,7 @@ public final class MainMenu {
     }
 
     public static void clearProject(Project project) {
-        if (project == null) {
-            LOGGER.info("No project loaded!");
+        if (projectIsNull(project)) {
             return;
         }
         project.clear();
@@ -130,5 +136,13 @@ public final class MainMenu {
         itCompany.switchToNextMonth();
         MainMenu.monthsPassed++;
         MainMenu.showMenu();
+    }
+
+    public static void toDoList(HashMap<String, Boolean> toDoMap) {
+        LOGGER.info("Tasks to do: ");
+        for (String taskName : toDoMap.keySet()) {
+            String marker = (toDoMap.get(taskName)) ? " ✅" : " ❌";
+            LOGGER.info(taskName + marker);
+        }
     }
 }

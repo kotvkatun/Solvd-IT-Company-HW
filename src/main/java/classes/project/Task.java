@@ -1,8 +1,6 @@
 package classes.project;
 
-import classes.interfaces.Addable;
 import classes.interfaces.CreatableFromInput;
-import classes.itcompany.ITCompany;
 import classes.ui.Input;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,12 +22,14 @@ public class Task implements CreatableFromInput {
         this.timeRequired = timeRequired;
         this.reward = reward;
     }
+
     public Task(String taskName, Integer timeRequired, BigDecimal reward) {
         this.taskName = taskName;
         this.PROJECT = null;
         this.timeRequired = timeRequired;
         this.reward = reward;
     }
+
     public String getTaskName() {
         return taskName;
     }
@@ -85,7 +85,7 @@ public class Task implements CreatableFromInput {
         String taskName = Input.stringConsoleInput();
         Integer timeRequired = null;
         while (timeRequired == null) {
-            try{
+            try {
                 LOGGER.info("Enter time required:");
                 timeRequired = Integer.parseInt(Input.stringConsoleInput());
             } catch (NumberFormatException e) {
@@ -103,6 +103,7 @@ public class Task implements CreatableFromInput {
         }
         return new Task(taskName, timeRequired, reward);
     }
+
     public Task createFromInput(boolean isComplete) {
         Task task = this.createFromInput();
         task.setComplete(isComplete);

@@ -12,12 +12,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class Project implements JSONExternalizable, Clearable {
     public static final Logger LOGGER = LogManager.getLogger(Project.class);
     private String projectName;
     private List<Task> taskList;
+
     public Project(String projectName) {
         this.projectName = projectName;
     }
@@ -28,13 +31,14 @@ public class Project implements JSONExternalizable, Clearable {
                 " " + projectName + '\n' +
                 "Tasks: " + "\n" + this.showTasks();
     }
+
     public String showTasks() {
         StringBuilder tasks = new StringBuilder();
         int i = 1;
-        for(Task task: this.taskList) {
-            String marker = (task.getComplete())? "☑️\n" : "❌\n";
+        for (Task task : this.taskList) {
+            String marker = (task.getComplete()) ? "☑️\n" : "❌\n";
             tasks.append(i).append(". ").append(
-                    task.getTaskName()).append(" | Time required: ")
+                            task.getTaskName()).append(" | Time required: ")
                     .append(task.getTimeRequired())
                     .append(" hours | Reward: ")
                     .append(task.getReward())
@@ -43,10 +47,12 @@ public class Project implements JSONExternalizable, Clearable {
         }
         return tasks.toString();
     }
+
     // Function for adding tasks to the current project
     public void addTask(Task task) {
         this.taskList.add(task);
     }
+
     // and for removing tasks
     public void removeTask(Task task) throws EmptyTaskListException {
         if (this.taskList.isEmpty()) {
@@ -54,13 +60,15 @@ public class Project implements JSONExternalizable, Clearable {
         }
         this.taskList.remove(task);
     }
-    public void removeTask(String taskName){
+
+    public void removeTask(String taskName) {
         if (this.getTask(taskName) != null) {
             this.taskList.remove(this.getTask(taskName));
         } else {
             LOGGER.info("No such task.");
         }
     }
+
     public void addTaskFromInput() {
         LOGGER.info("Enter new task name (cannot be blank):");
         String taskName = "";
@@ -69,7 +77,7 @@ public class Project implements JSONExternalizable, Clearable {
         }
         int timeRequired = 0;
         while (timeRequired <= 0) {
-            try{
+            try {
                 LOGGER.info("Enter time required:");
                 timeRequired = Integer.parseInt(Input.stringConsoleInput());
                 if (timeRequired <= 0) {
@@ -98,9 +106,11 @@ public class Project implements JSONExternalizable, Clearable {
         }
         this.addTask(new Task(taskName, this, timeRequired, reward));
     }
+
     public String getProjectName() {
         return projectName;
     }
+
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
@@ -112,14 +122,24 @@ public class Project implements JSONExternalizable, Clearable {
     public void setTaskList(List<Task> taskList) {
         this.taskList = taskList;
     }
+
     public Task getTask(String taskName) {
-        for(Task task: taskList) {
-            if(Objects.equals(task.getTaskName(), taskName)){
+        for (Task task : taskList) {
+            if (Objects.equals(task.getTaskName(), taskName)) {
                 return task;
             }
         }
         return null;
     }
+
+    public HashMap<String, Boolean> getToDoList() {
+        HashMap<String, Boolean> toDoMap = new HashMap<>();
+        for (Task task : this.getTaskList()) {
+            toDoMap.put(task.getTaskName(), task.getComplete());
+        }
+        return toDoMap;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,8 +157,8 @@ public class Project implements JSONExternalizable, Clearable {
     public boolean writeJSON() {
         try {
             return JSONManager.saveProject(this);
-        } catch (IncorrectProjectNameException e){
-            while(true){
+        } catch (IncorrectProjectNameException e) {
+            while (true) {
                 LOGGER.info("Project name contains whitespace and will be saved using '_'");
                 LOGGER.info("Choose different filename? (y/n)");
                 String response = Input.stringConsoleInput().toLowerCase();
