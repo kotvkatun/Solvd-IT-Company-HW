@@ -6,7 +6,7 @@ import classes.itcompany.ITCompany;
 import classes.json.JSONManager;
 import classes.project.Project;
 import classes.project.Task;
-import classes.project.TasksLinkedList;
+import classes.project.CoolLinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +28,7 @@ public final class MainMenu {
                  🛠 manage - Add or remove tasks from a project\s
                  🧹 clear - Remove all current tasks from selected project\s
                  🗂 undupe - Remove all duplicate tasks from selected project\s
-                 📜 todo - Get a list of tasks to do.\s
+                 📜 todo - Get a list of tasks to do (forces undupe).\s
                  🗓 next - Set time to next month and refresh developers time limits.\s
                  💽 open - Load an existing project from a file\s
                  💾 save - Save current project to a file (will keep project name)\s
@@ -149,7 +149,7 @@ public final class MainMenu {
         }
     }
 
-    public static void undupe(TasksLinkedList<Task> taskTasksLinkedList) {
-        taskTasksLinkedList.clearDupes();
+    public static void undupe(CoolLinkedList<Task> taskCoolLinkedList) {
+        taskCoolLinkedList.clearDupes();
     }
 }

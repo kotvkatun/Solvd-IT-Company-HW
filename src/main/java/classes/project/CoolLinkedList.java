@@ -7,13 +7,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class TasksLinkedList<T> implements Iterable<T> {
-    private static final Logger LOGGER = LogManager.getLogger(TasksLinkedList.class);
+public class CoolLinkedList<T> implements Iterable<T> {
+    private static final Logger LOGGER = LogManager.getLogger(CoolLinkedList.class);
     private int size;
-    private Node<T> head, last;
+    private Node<T> head, tail;
 
     static class Node<S> {
-        int index;
         S task;
         Node<S> next;
 
@@ -23,7 +22,7 @@ public class TasksLinkedList<T> implements Iterable<T> {
         }
     }
 
-    public TasksLinkedList() {
+    public CoolLinkedList() {
         size = 0;
     }
 
@@ -34,16 +33,16 @@ public class TasksLinkedList<T> implements Iterable<T> {
     public void add(T task) {
         if (head == null) {
             head = new Node<>(task);
-            last = head;
+            tail = head;
             size++;
             return;
         }
-        last.next = new Node<>(task);
-        last = last.next;
+        tail.next = new Node<>(task);
+        tail = tail.next;
         size++;
     }
 
-    public Task get(int index) {
+    public T get(int index) {
         Node<T> pointer = head;
         int currentNode = 0;
         if (index >= size) {
@@ -53,7 +52,7 @@ public class TasksLinkedList<T> implements Iterable<T> {
             pointer = pointer.next;
             currentNode++;
         }
-        return (Task) pointer.task;
+        return pointer.task;
     }
 
     public void remove(int index) {
@@ -73,7 +72,7 @@ public class TasksLinkedList<T> implements Iterable<T> {
     }
 
     public void clear() {
-        last = null;
+        tail = null;
         head = null;
         size = 0;
     }
@@ -106,7 +105,7 @@ public class TasksLinkedList<T> implements Iterable<T> {
     static class ListIterator<T> implements Iterator<T> {
         Node<T> current;
 
-        public ListIterator(TasksLinkedList<T> list) {
+        public ListIterator(CoolLinkedList<T> list) {
             current = list.head;
         }
 

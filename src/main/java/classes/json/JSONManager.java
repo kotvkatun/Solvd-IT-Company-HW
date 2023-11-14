@@ -5,7 +5,7 @@ import classes.exceptions.IncorrectProjectNameException;
 import classes.interfaces.IGetJSONObject;
 import classes.project.Project;
 import classes.project.Task;
-import classes.project.TasksLinkedList;
+import classes.project.CoolLinkedList;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +43,7 @@ public final class JSONManager implements IGetJSONObject {
         JSONArray tasksJSONarray = projectJSON.getJSONArray("tasks");
         // Set up variables for Project
         Project project = new Project(projectJSON.getString("projectName"));
-        TasksLinkedList<Task> taskList = new TasksLinkedList<>();
+        CoolLinkedList<Task> taskList = new CoolLinkedList<>();
         // Iterate over JSONarray to get individual tasks
         for (Object taskObj : tasksJSONarray) {
             JSONObject taskJSON = (JSONObject) taskObj;

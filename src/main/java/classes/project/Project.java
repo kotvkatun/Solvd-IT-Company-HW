@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Project implements JSONExternalizable, Clearable {
     public static final Logger LOGGER = LogManager.getLogger(Project.class);
     private String projectName;
-    private TasksLinkedList<Task> taskList;
+    private CoolLinkedList<Task> taskList;
 
     public Project(String projectName) {
         this.projectName = projectName;
@@ -53,7 +53,7 @@ public class Project implements JSONExternalizable, Clearable {
     }
 
     // and for removing tasks
-    public void removeTask(int taskIndex) throws EmptyTaskListException {
+    public final void removeTask(int taskIndex) throws EmptyTaskListException {
         if (this.taskList.isEmpty()) {
             throw new EmptyTaskListException("Cannot remove tasks from an empty list!");
         }
@@ -106,11 +106,11 @@ public class Project implements JSONExternalizable, Clearable {
         this.projectName = projectName;
     }
 
-    public TasksLinkedList<Task> getTaskList() {
+    public CoolLinkedList<Task> getTaskList() {
         return taskList;
     }
 
-    public void setTaskList(TasksLinkedList<Task> taskList) {
+    public void setTaskList(CoolLinkedList<Task> taskList) {
         this.taskList = taskList;
     }
 
@@ -125,6 +125,7 @@ public class Project implements JSONExternalizable, Clearable {
 
     public HashMap<String, Boolean> getToDoList() {
         HashMap<String, Boolean> toDoMap = new HashMap<>();
+        this.getTaskList().clearDupes();
         for (Task task : this.getTaskList()) {
             toDoMap.put(task.getTaskName(), task.getComplete());
         }
