@@ -109,4 +109,14 @@ public class Task implements CreatableFromInput {
         task.setComplete(isComplete);
         return task;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskName='" + taskName + '\'' +
+                ", timeRequired=" + timeRequired +
+                ", reward=" + reward +
+                ", isComplete=" + isComplete +
+                '}';
+    }
 }
