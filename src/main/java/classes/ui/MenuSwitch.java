@@ -35,6 +35,9 @@ public final class MenuSwitch {
                 case "clear":
                     MainMenu.clearProject(ITCOMPANY.getProject());
                     break;
+                case "undupe":
+                    MainMenu.undupe(ITCOMPANY.getProject().getTaskList());
+                    break;
                 case "todo":
                     MainMenu.toDoList(ITCOMPANY.getProject().getToDoList());
                     break;

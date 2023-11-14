@@ -13,13 +13,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 public class Project implements JSONExternalizable, Clearable {
     public static final Logger LOGGER = LogManager.getLogger(Project.class);
     private String projectName;
-    private List<Task> taskList;
+    private TasksLinkedList<Task> taskList;
 
     public Project(String projectName) {
         this.projectName = projectName;
@@ -54,19 +53,11 @@ public class Project implements JSONExternalizable, Clearable {
     }
 
     // and for removing tasks
-    public void removeTask(Task task) throws EmptyTaskListException {
+    public void removeTask(int taskIndex) throws EmptyTaskListException {
         if (this.taskList.isEmpty()) {
             throw new EmptyTaskListException("Cannot remove tasks from an empty list!");
         }
-        this.taskList.remove(task);
-    }
-
-    public void removeTask(String taskName) {
-        if (this.getTask(taskName) != null) {
-            this.taskList.remove(this.getTask(taskName));
-        } else {
-            LOGGER.info("No such task.");
-        }
+        this.taskList.remove(taskIndex);
     }
 
     public void addTaskFromInput() {
@@ -115,11 +106,11 @@ public class Project implements JSONExternalizable, Clearable {
         this.projectName = projectName;
     }
 
-    public List<Task> getTaskList() {
+    public TasksLinkedList<Task> getTaskList() {
         return taskList;
     }
 
-    public void setTaskList(List<Task> taskList) {
+    public void setTaskList(TasksLinkedList<Task> taskList) {
         this.taskList = taskList;
     }
 

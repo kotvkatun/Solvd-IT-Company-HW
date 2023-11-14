@@ -5,21 +5,22 @@ import classes.exceptions.IncorrectProjectNameException;
 import classes.interfaces.IGetJSONObject;
 import classes.project.Project;
 import classes.project.Task;
+import classes.project.TasksLinkedList;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public final class JSONManager implements IGetJSONObject {
     private static final Logger LOGGER = LogManager.getLogger(JSONManager.class);
+
     public static Project loadProject(String filename) {
         // Read json into string
         String projectstring;
@@ -42,7 +43,7 @@ public final class JSONManager implements IGetJSONObject {
         JSONArray tasksJSONarray = projectJSON.getJSONArray("tasks");
         // Set up variables for Project
         Project project = new Project(projectJSON.getString("projectName"));
-        List<Task> taskList = new ArrayList<>();
+        TasksLinkedList<Task> taskList = new TasksLinkedList<>();
         // Iterate over JSONarray to get individual tasks
         for (Object taskObj : tasksJSONarray) {
             JSONObject taskJSON = (JSONObject) taskObj;
@@ -56,6 +57,7 @@ public final class JSONManager implements IGetJSONObject {
         project.setTaskList(taskList);
         return project;
     }
+
     public static boolean saveProject(Project project) throws IncorrectProjectNameException {
         if (project == null) {
             LOGGER.info("Can't save an unopened project!");
@@ -73,6 +75,7 @@ public final class JSONManager implements IGetJSONObject {
             return false;
         }
     }
+
     public static boolean saveProject(Project project, String filename) {
         if (project == null) {
             LOGGER.info("Can't save an unopened project!");
@@ -87,6 +90,7 @@ public final class JSONManager implements IGetJSONObject {
             return false;
         }
     }
+
     public static boolean saveProject(Project project, boolean removeWhitespace) {
         if (project == null) {
             LOGGER.info("Can't save an unopened project!");

@@ -5,6 +5,8 @@ import classes.exceptions.EmptyTaskListException;
 import classes.itcompany.ITCompany;
 import classes.json.JSONManager;
 import classes.project.Project;
+import classes.project.Task;
+import classes.project.TasksLinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +27,7 @@ public final class MainMenu {
                  👉🏻 assign - Assign tasks to developers\s
                  🛠 manage - Add or remove tasks from a project\s
                  🧹 clear - Remove all current tasks from selected project\s
+                 🗂 undupe - Remove all duplicate tasks from selected project\s
                  📜 todo - Get a list of tasks to do.\s
                  🗓 next - Set time to next month and refresh developers time limits.\s
                  💽 open - Load an existing project from a file\s
@@ -86,8 +89,8 @@ public final class MainMenu {
             LOGGER.info(project);
             LOGGER.info("Enter task index:");
             try {
-                int taskIndex = Integer.parseInt(Input.stringConsoleInput());
-                project.removeTask(project.getTaskList().get(taskIndex));
+                int taskIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
+                project.removeTask(taskIndex);
                 LOGGER.info("Removed task " + taskIndex);
             } catch (IndexOutOfBoundsException e) {
                 LOGGER.info("Incorrect index");
@@ -144,5 +147,9 @@ public final class MainMenu {
             String marker = (toDoMap.get(taskName)) ? " ✅" : " ❌";
             LOGGER.info(taskName + marker);
         }
+    }
+
+    public static void undupe(TasksLinkedList<Task> taskTasksLinkedList) {
+        taskTasksLinkedList.clearDupes();
     }
 }

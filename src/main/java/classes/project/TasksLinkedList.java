@@ -1,16 +1,18 @@
 package classes.project;
 
-import classes.interfaces.CreatableFromInput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class TasksLinkedList<T extends CreatableFromInput> {
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+public class TasksLinkedList<T> implements Iterable<T> {
     private static final Logger LOGGER = LogManager.getLogger(TasksLinkedList.class);
     private int size;
-    private Node<T> head;
-    private Node<T> last;
+    private Node<T> head, last;
 
-    class Node<S extends CreatableFromInput> {
+    static class Node<S> {
         int index;
         S task;
         Node<S> next;
@@ -23,6 +25,10 @@ public class TasksLinkedList<T extends CreatableFromInput> {
 
     public TasksLinkedList() {
         size = 0;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     public void add(T task) {
@@ -51,7 +57,25 @@ public class TasksLinkedList<T extends CreatableFromInput> {
     }
 
     public void remove(int index) {
-        Node<T> pointer = head;
+        if (index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            head = head.next;
+        } else {
+            Node<T> current = head;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.next;
+            }
+            current.next = current.next.next;
+        }
+        size--;
+    }
+
+    public void clear() {
+        last = null;
+        head = null;
+        size = 0;
     }
 
     public int size() {
@@ -64,5 +88,41 @@ public class TasksLinkedList<T extends CreatableFromInput> {
             LOGGER.info(pointer.task.toString());
             pointer = pointer.next;
         }
+    }
+
+    public void clearDupes() {
+        Set<T> tSet = new HashSet<>(size);
+        Node<T> pointer = head;
+        while (pointer != null) {
+            tSet.add(pointer.task);
+            pointer = pointer.next;
+        }
+        this.clear();
+        for (T task : tSet) {
+            this.add(task);
+        }
+    }
+
+    static class ListIterator<T> implements Iterator<T> {
+        Node<T> current;
+
+        public ListIterator(TasksLinkedList<T> list) {
+            current = list.head;
+        }
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public T next() {
+            T task = current.task;
+            current = current.next;
+            return task;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ListIterator<>(this);
     }
 }
