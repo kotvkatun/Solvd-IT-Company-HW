@@ -17,6 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import static com.solvd.classes.json.JSONFields.*;
+
 
 public final class JSONManager implements IGetJSONObject {
     private static final Logger LOGGER = LogManager.getLogger(JSONManager.class);
@@ -39,20 +41,20 @@ public final class JSONManager implements IGetJSONObject {
             LOGGER.error(e.getMessage());
             throw e;
         }
-        // Get tasks object array from json
+        // Get task objects array from json
         JSONArray tasksJSONarray = projectJSON.getJSONArray("tasks");
         // Set up variables for Project
-        Project project = new Project(projectJSON.getString("projectName"));
+        Project project = new Project(projectJSON.getString(PROJECT_NAME.getFieldName()));
         CoolLinkedList<Task> taskList = new CoolLinkedList<>();
         // Iterate over JSONarray to get individual tasks
         for (Object taskObj : tasksJSONarray) {
             JSONObject taskJSON = (JSONObject) taskObj;
             // Slot new tasks into the list
             taskList.add(new Task(
-                    taskJSON.getString("taskName"),
+                    taskJSON.getString(TASK_NAME.getFieldName()),
                     project,
-                    taskJSON.getInt("timeRequired"),
-                    new BigDecimal(taskJSON.getString("reward"))));
+                    taskJSON.getInt(TIME_REQUIRED.getFieldName()),
+                    new BigDecimal(taskJSON.getString(REWARD.getFieldName()))));
         }
         project.setTaskList(taskList);
         return project;

@@ -6,14 +6,14 @@ import java.util.Objects;
 
 public abstract class AbstractDeveloper {
     private final int TIME_NORM = 180;
-    protected Grade grade;
+    protected Grades grade;
     protected String developerName;
     protected Integer timeAmount = TIME_NORM;
 
     public AbstractDeveloper() {
     }
 
-    public AbstractDeveloper(Grade grade, String developerName) {
+    public AbstractDeveloper(Grades grade, String developerName) {
         this.grade = grade;
         this.developerName = developerName;
     }

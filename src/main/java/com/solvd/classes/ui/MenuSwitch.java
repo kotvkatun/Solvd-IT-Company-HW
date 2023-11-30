@@ -14,7 +14,7 @@ public final class MenuSwitch {
     }
 
     {
-        menu = MenuOption.getOptions();
+        menu = MenuOptions.getOptions();
     }
 
     private final ITCompany ITCOMPANY = new ITCompany("ExampleLLC");

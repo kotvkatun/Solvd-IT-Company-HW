@@ -2,7 +2,7 @@ package com.solvd.classes.itcompany;
 
 import com.solvd.classes.developer.AbstractDeveloper;
 import com.solvd.classes.developer.Developer;
-import com.solvd.classes.developer.Grade;
+import com.solvd.classes.developer.Grades;
 import com.solvd.classes.interfaces.Addable;
 import com.solvd.classes.interfaces.Clearable;
 import com.solvd.classes.project.Project;
@@ -17,9 +17,9 @@ public final class ITCompany implements Clearable, Addable {
     private List<Developer> developerList;
 
     {
-        Developer junVasya = new Developer(Grade.JUNIOR, "Vasya Pupkin");
-        Developer midPetya = new Developer(Grade.MIDDLE, "Petya Petrov");
-        Developer senPomidor = new Developer(Grade.SENIOR, "Senior Pomidor");
+        Developer junVasya = new Developer(Grades.JUNIOR, "Vasya Pupkin");
+        Developer midPetya = new Developer(Grades.MIDDLE, "Petya Petrov");
+        Developer senPomidor = new Developer(Grades.SENIOR, "Senior Pomidor");
         List<Developer> developerList = new ArrayList<>();
         developerList.add(junVasya);
         developerList.add(midPetya);

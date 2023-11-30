@@ -1,6 +1,6 @@
 package com.solvd.classes.ui;
 
-public enum MenuOption {
+public enum MenuOptions {
     PROJECT("📒 project - Show project info\n"),
     DEVELOPER("👨🏻‍💻 developer - Show developer info\n"),
     ASSIGN("👉🏻 assign - Assign tasks to developers\n"),
@@ -15,13 +15,13 @@ public enum MenuOption {
 
     private final String DESCRIPTION;
 
-    MenuOption(String description) {
+    MenuOptions(String description) {
         this.DESCRIPTION = description;
     }
 
     public static String getOptions() {
         StringBuilder optionsBuilder = new StringBuilder();
-        for (MenuOption option : MenuOption.values()) {
+        for (MenuOptions option : MenuOptions.values()) {
             optionsBuilder.append(option.DESCRIPTION);
         }
         return optionsBuilder.toString();

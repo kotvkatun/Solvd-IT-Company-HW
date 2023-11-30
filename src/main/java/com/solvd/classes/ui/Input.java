@@ -38,11 +38,11 @@ public class Input {
         return input;
     }
 
-    public static MenuOption menuOptionConsoleInput() {
-        MenuOption input;
+    public static MenuOptions menuOptionConsoleInput() {
+        MenuOptions input;
         while (true) {
             try {
-                input = MenuOption.valueOf(Input.stringConsoleInput().toUpperCase().strip());
+                input = MenuOptions.valueOf(Input.stringConsoleInput().toUpperCase().strip());
                 return input;
             } catch (IllegalArgumentException e) {
                 LOGGER.info("Wrong command.");
