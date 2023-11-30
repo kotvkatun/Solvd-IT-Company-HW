@@ -13,12 +13,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.List;
 
-public final class MainMenu {
-    private static final Logger LOGGER = LogManager.getLogger(MainMenu.class);
-    private static int monthsPassed = 0;
+public final class MainMenuUtil {
+    private static final Logger LOGGER = LogManager.getLogger(MainMenuUtil.class);
+    public static int monthsPassed = 0;
 
     public static void showMenu() {
-        LOGGER.info("Months passed: " + MainMenu.monthsPassed);
+        LOGGER.info("Months passed: " + MainMenuUtil.monthsPassed);
         LOGGER.info("""
                 ----------------------------------
                  Available commands:             \s
@@ -63,10 +63,10 @@ public final class MainMenu {
             return;
         }
         try {
-            MainMenu.developerInfo(developerList);
+            MainMenuUtil.developerInfo(developerList);
             LOGGER.info("Enter developer's index:");
             int devIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
-            MainMenu.projectInfo(project);
+            MainMenuUtil.projectInfo(project);
             LOGGER.info("Enter task index:");
             int taskIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
             developerList.get(devIndex).completeTask(project.getTaskList().get(taskIndex));
@@ -137,8 +137,7 @@ public final class MainMenu {
 
     public static void nextMonth(ITCompany itCompany) {
         itCompany.switchToNextMonth();
-        MainMenu.monthsPassed++;
-        MainMenu.showMenu();
+        MainMenuUtil.monthsPassed++;
     }
 
     public static void toDoList(HashMap<String, Boolean> toDoMap) {
