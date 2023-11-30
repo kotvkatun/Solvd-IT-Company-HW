@@ -12,8 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Project implements JSONExternalizable, Clearable {
     public static final Logger LOGGER = LogManager.getLogger(Project.class);
@@ -123,13 +126,20 @@ public class Project implements JSONExternalizable, Clearable {
         return null;
     }
 
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
+    }
+
+
     public HashMap<String, Boolean> getToDoList() {
-        HashMap<String, Boolean> toDoMap = new HashMap<>();
-        this.getTaskList().clearDupes();
+        List<Task> tasks = new ArrayList<>();
         for (Task task : this.getTaskList()) {
-            toDoMap.put(task.getTaskName(), task.getComplete());
+            tasks.add(task);
         }
-        return toDoMap;
+        return tasks.stream()
+                .filter(distinctByKey(Task::getTaskName))
+                .collect(Collectors.toMap(Task::getTaskName, Task::getComplete, (prev, next) -> next, HashMap::new));
     }
 
     @Override
