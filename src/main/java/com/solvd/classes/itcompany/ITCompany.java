@@ -55,7 +55,7 @@ public final class ITCompany implements Clearable, Addable {
         this.developerList = developerList;
     }
 
-    public void switchToNextMonth() {
+    public void refreshDeveloperTime() {
         developerList.forEach(AbstractDeveloper::refreshTime);
     }
 

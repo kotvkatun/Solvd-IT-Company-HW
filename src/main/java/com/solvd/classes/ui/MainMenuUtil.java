@@ -118,7 +118,7 @@ public final class MainMenuUtil {
     }
 
     public static void nextMonth(ITCompany itCompany) {
-        itCompany.switchToNextMonth();
+        itCompany.refreshDeveloperTime();
         MainMenuUtil.monthsPassed++;
     }
 
