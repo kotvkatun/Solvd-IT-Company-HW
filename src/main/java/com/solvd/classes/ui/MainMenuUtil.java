@@ -17,24 +17,6 @@ public final class MainMenuUtil {
     private static final Logger LOGGER = LogManager.getLogger(MainMenuUtil.class);
     public static int monthsPassed = 0;
 
-    public static void showMenu() {
-        LOGGER.info("Months passed: " + MainMenuUtil.monthsPassed);
-        LOGGER.info("""
-                ----------------------------------
-                 Available commands:             \s
-                 📒 project - Show project info\s
-                 👨🏻‍💻 developer - Show developer info\s
-                 👉🏻 assign - Assign tasks to developers\s
-                 🛠 manage - Add or remove tasks from a project\s
-                 🧹 clear - Remove all current tasks from selected project\s
-                 🗂 undupe - Remove all duplicate tasks from selected project\s
-                 📜 todo - Get a list of tasks to do (forces undupe).\s
-                 🗓 next - Set time to next month and refresh developers time limits.\s
-                 💽 open - Load an existing project from a file\s
-                 💾 save - Save current project to a file (will keep project name)\s
-                 exit - Exit application""");
-    }
-
     public static boolean projectIsNull(Project project) {
         if (project == null) {
             LOGGER.info("No project loaded. Please use 'open' to open a new project.");
