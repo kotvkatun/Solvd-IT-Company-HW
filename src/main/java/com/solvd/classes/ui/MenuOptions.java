@@ -8,6 +8,7 @@ public enum MenuOptions {
     CLEAR("🧹 clear - Remove all current tasks from selected project\n"),
     UNDUPE("🗂 undupe - Remove all duplicate tasks from selected projects\n"),
     TODO("📜 todo - Get a list of tasks to do.\n"),
+    FILTER("⚖️ filter - filter task list by reward. \n"),
     NEXT("🗓 next - Set time to next month and refresh developers time limits.\n"),
     OPEN("💽 open - Load an existing project from a file\n"),
     SAVE("💾 save - Save current project to a file (will keep project name)\n"),

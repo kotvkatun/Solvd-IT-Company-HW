@@ -10,6 +10,7 @@ import com.solvd.classes.project.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -127,6 +128,19 @@ public final class MainMenuUtil {
         for (String taskName : toDoMap.keySet()) {
             String marker = (toDoMap.get(taskName)) ? " ✅" : " ❌";
             LOGGER.info(taskName + marker);
+        }
+    }
+
+    public static void filterTaskList(CoolLinkedList<Task> taskList) {
+        List<Task> tasks = new ArrayList<>();
+        for (Task task : taskList) {
+            tasks.add(task);
+        }
+        List<Task> filteredTasks = tasks.stream()
+                .filter(Input.constructPredicateFromInput())
+                .toList();
+        for (Task task : filteredTasks) {
+            LOGGER.info(task.toString());
         }
     }
 
