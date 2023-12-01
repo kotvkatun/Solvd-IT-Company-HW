@@ -1,4 +1,4 @@
-package com.solvd.classes.interfaces;
+package com.solvd.classes.itcompany;
 
 public interface Clearable {
     void clear();

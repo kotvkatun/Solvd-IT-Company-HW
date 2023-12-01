@@ -19,6 +19,10 @@ public final class MenuSwitch {
 
     private final ITCompany ITCOMPANY = new ITCompany("ExampleLLC");
 
+    {
+        MainMenuUtil.open(ITCOMPANY);
+    }
+
     public void mainMenuSwitch() {
         while (true) {
             LOGGER.info("Months passed: " + MainMenuUtil.monthsPassed);

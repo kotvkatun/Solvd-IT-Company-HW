@@ -50,7 +50,6 @@ public class CoolLinkedList<T> implements Iterable<T> {
         if (index == 0) {
             newNode.next = head;
             head = newNode;
-            size++;
         } else {
             Node<T> pointer = head;
             int i = 0;
@@ -60,8 +59,8 @@ public class CoolLinkedList<T> implements Iterable<T> {
             }
             newNode.next = pointer.next;
             pointer.next = newNode;
-            size++;
         }
+        size++;
     }
 
     public T get(int index) {

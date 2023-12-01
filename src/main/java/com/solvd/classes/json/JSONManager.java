@@ -2,7 +2,6 @@ package com.solvd.classes.json;
 
 import com.solvd.classes.exceptions.IncorrectJSONFormatException;
 import com.solvd.classes.exceptions.IncorrectProjectNameException;
-import com.solvd.classes.interfaces.IGetJSONObject;
 import com.solvd.classes.project.CoolLinkedList;
 import com.solvd.classes.project.Project;
 import com.solvd.classes.project.Task;

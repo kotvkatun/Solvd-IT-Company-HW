@@ -4,7 +4,8 @@ public enum JSONFields {
     PROJECT_NAME("projectName"),
     TASK_NAME("taskName"),
     TIME_REQUIRED("timeRequired"),
-    REWARD("reward");
+    REWARD("reward"),
+    TASKS("tasks");
     private final String fieldName;
 
     JSONFields(String fieldName) {

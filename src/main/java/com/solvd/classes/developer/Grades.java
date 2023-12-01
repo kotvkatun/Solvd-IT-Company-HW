@@ -6,6 +6,10 @@ public enum Grades {
     SENIOR(0.5f);
     public final float GRADE_MODIFIER;
 
+    public String getGrade() {
+        return this.name();
+    }
+
     Grades(float GRADE_MODIFIER) {
         this.GRADE_MODIFIER = GRADE_MODIFIER;
     }

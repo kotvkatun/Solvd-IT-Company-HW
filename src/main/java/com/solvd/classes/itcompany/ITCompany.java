@@ -3,8 +3,6 @@ package com.solvd.classes.itcompany;
 import com.solvd.classes.developer.AbstractDeveloper;
 import com.solvd.classes.developer.Developer;
 import com.solvd.classes.developer.Grades;
-import com.solvd.classes.interfaces.Addable;
-import com.solvd.classes.interfaces.Clearable;
 import com.solvd.classes.project.Project;
 import com.solvd.classes.project.Task;
 

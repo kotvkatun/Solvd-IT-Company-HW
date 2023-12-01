@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Predicate;
@@ -55,26 +54,21 @@ public class Input {
     }
 
     public static Predicate<? super Task> constructPredicateFromInput() {
-        String operator;
-        String secondParameter;
-        while (true) {
-            LOGGER.info("Enter filtering operation: >, < or =");
-            operator = Input.stringConsoleInput();
-            if (!List.of(">", "<", "=").contains(operator)) {
-                LOGGER.info("Specified operator is not supported.");
-                continue;
+        IGetInput<String> paramGetter = (inputOption, match, warning) -> {
+            while (true) {
+                LOGGER.info(inputOption);
+                String output = Input.stringConsoleInput();
+                if (!output.matches(match)) {
+                    LOGGER.info(warning);
+                    continue;
+                }
+                return output;
             }
-            break;
-        }
-        while (true) {
-            LOGGER.info("Enter second term: ");
-            secondParameter = Input.stringConsoleInput();
-            if (!secondParameter.matches("[0-9]*.[0-9]*")) {
-                LOGGER.info("Input not numeric.");
-                continue;
-            }
-            break;
-        }
+        };
+        String operator = paramGetter.getInput("Enter filtering operation: >, < or =",
+                "[<>=]", "Specified operator is not supported.");
+        String secondParameter = paramGetter.getInput("Enter second term: ",
+                "[0-9]*.[0-9]*", "Input not numeric.");
         return getPredicate(secondParameter, operator);
     }
 
