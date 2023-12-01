@@ -49,7 +49,7 @@ public final class MenuSwitch {
                     MainMenuUtil.toDoList(ITCOMPANY.getProject().getToDoList());
                     break;
                 case FILTER:
-                    MainMenuUtil.filterTaskList(ITCOMPANY.getProject().getTaskList());
+                    MainMenuUtil.filterTaskListByReward(ITCOMPANY.getProject().getTaskList());
                     break;
                 case OPEN:
                     MainMenuUtil.open(ITCOMPANY);

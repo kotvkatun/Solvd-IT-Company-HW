@@ -131,7 +131,7 @@ public final class MainMenuUtil {
         }
     }
 
-    public static void filterTaskList(CoolLinkedList<Task> taskList) {
+    public static void filterTaskListByReward(CoolLinkedList<Task> taskList) {
         List<Task> tasks = new ArrayList<>();
         for (Task task : taskList) {
             tasks.add(task);
