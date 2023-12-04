@@ -4,7 +4,6 @@ import com.solvd.classes.developer.Developer;
 import com.solvd.classes.exceptions.EmptyTaskListException;
 import com.solvd.classes.itcompany.ITCompany;
 import com.solvd.classes.json.JSONManager;
-import com.solvd.classes.project.CoolLinkedList;
 import com.solvd.classes.project.Project;
 import com.solvd.classes.project.Task;
 import org.apache.logging.log4j.LogManager;
@@ -131,20 +130,12 @@ public final class MainMenuUtil {
         }
     }
 
-    public static void filterTaskListByReward(CoolLinkedList<Task> taskList) {
-        List<Task> tasks = new ArrayList<>();
-        for (Task task : taskList) {
-            tasks.add(task);
-        }
-        List<Task> filteredTasks = tasks.stream()
+    public static void filterTaskListByReward(ArrayList<Task> taskList) {
+        List<Task> filteredTasks = taskList.stream()
                 .filter(Input.constructPredicateFromInput())
                 .toList();
         for (Task task : filteredTasks) {
             LOGGER.info(task.toString());
         }
-    }
-
-    public static void undupe(CoolLinkedList<Task> taskCoolLinkedList) {
-        taskCoolLinkedList.clearDupes();
     }
 }

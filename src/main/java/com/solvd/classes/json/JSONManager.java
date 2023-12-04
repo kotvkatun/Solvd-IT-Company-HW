@@ -2,7 +2,6 @@ package com.solvd.classes.json;
 
 import com.solvd.classes.exceptions.IncorrectJSONFormatException;
 import com.solvd.classes.exceptions.IncorrectProjectNameException;
-import com.solvd.classes.project.CoolLinkedList;
 import com.solvd.classes.project.Project;
 import com.solvd.classes.project.Task;
 import org.apache.commons.io.IOUtils;
@@ -15,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.solvd.classes.json.JSONFields.*;
 
@@ -44,18 +45,15 @@ public final class JSONManager implements IGetJSONObject {
         JSONArray tasksJSONarray = projectJSON.getJSONArray("tasks");
         // Set up variables for Project
         Project project = new Project(projectJSON.getString(PROJECT_NAME.getFieldName()));
-        CoolLinkedList<Task> taskList = new CoolLinkedList<>();
         // Iterate over JSONarray to get individual tasks
-        for (Object taskObj : tasksJSONarray) {
-            JSONObject taskJSON = (JSONObject) taskObj;
-            // Slot new tasks into the list
-            taskList.add(new Task(
-                    taskJSON.getString(TASK_NAME.getFieldName()),
-                    project,
-                    taskJSON.getInt(TIME_REQUIRED.getFieldName()),
-                    new BigDecimal(taskJSON.getString(REWARD.getFieldName()))));
-        }
-        project.setTaskList(taskList);
+        List<Task> taskList = JSONStream.of(tasksJSONarray)
+                .map(taskJSON -> new Task(
+                        taskJSON.getString(TASK_NAME.getFieldName()),
+                        project,
+                        taskJSON.getInt(TIME_REQUIRED.getFieldName()),
+                        new BigDecimal(taskJSON.getString(REWARD.getFieldName()))))
+                .toList();
+        project.setTaskList(new ArrayList<>(taskList));
         return project;
     }
 

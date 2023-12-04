@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class Project implements JSONExternalizable, Clearable {
     public static final Logger LOGGER = LogManager.getLogger(Project.class);
     private String projectName;
-    private CoolLinkedList<Task> taskList;
+    private ArrayList<Task> taskList;
 
     public Project(String projectName) {
         this.projectName = projectName;
@@ -109,11 +109,11 @@ public class Project implements JSONExternalizable, Clearable {
         this.projectName = projectName;
     }
 
-    public CoolLinkedList<Task> getTaskList() {
+    public ArrayList<Task> getTaskList() {
         return taskList;
     }
 
-    public void setTaskList(CoolLinkedList<Task> taskList) {
+    public void setTaskList(ArrayList<Task> taskList) {
         this.taskList = taskList;
     }
 
@@ -133,10 +133,7 @@ public class Project implements JSONExternalizable, Clearable {
 
 
     public HashMap<String, Boolean> getToDoList() {
-        List<Task> tasks = new ArrayList<>();
-        for (Task task : this.getTaskList()) {
-            tasks.add(task);
-        }
+        List<Task> tasks = new ArrayList<>(this.getTaskList());
         return tasks.stream()
                 .filter(distinctByKey(Task::getTaskName))
                 .collect(Collectors.toMap(Task::getTaskName, Task::getComplete, (prev, next) -> next, HashMap::new));
