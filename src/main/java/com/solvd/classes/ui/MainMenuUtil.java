@@ -124,10 +124,10 @@ public final class MainMenuUtil {
 
     public static void toDoList(HashMap<String, Boolean> toDoMap) {
         LOGGER.info("Tasks to do: ");
-        for (String taskName : toDoMap.keySet()) {
-            String marker = (toDoMap.get(taskName)) ? " ✅" : " ❌";
-            LOGGER.info(taskName + marker);
-        }
+        toDoMap.entrySet()
+                .stream()
+                .map(entry -> (entry.getValue()) ? entry.getKey() + " ✅" : entry.getKey() + " ❌")
+                .forEach(LOGGER::info);
     }
 
     public static void filterTaskListByReward(ArrayList<Task> taskList) {

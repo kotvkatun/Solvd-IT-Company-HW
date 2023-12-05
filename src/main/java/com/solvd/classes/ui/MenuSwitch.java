@@ -13,14 +13,11 @@ public final class MenuSwitch {
         LOGGER = LogManager.getLogger(MenuSwitch.class);
     }
 
-    {
-        menu = MenuOptions.getOptions();
-    }
-
     private final ITCompany ITCOMPANY = new ITCompany("ExampleLLC");
 
     {
         MainMenuUtil.open(ITCOMPANY);
+        menu = MenuOptions.getOptions();
     }
 
     public void mainMenuSwitch() {
