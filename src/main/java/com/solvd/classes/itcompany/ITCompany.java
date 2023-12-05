@@ -54,7 +54,10 @@ public final class ITCompany implements Clearable, Addable {
     }
 
     public void refreshDeveloperTime() {
-        developerList.forEach(AbstractDeveloper::refreshTime);
+        developerList = new ArrayList<>(
+                developerList.stream()
+                        .peek(AbstractDeveloper::refreshTime)
+                        .toList());
     }
 
     @Override
