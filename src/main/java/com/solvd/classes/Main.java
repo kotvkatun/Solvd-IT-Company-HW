@@ -16,46 +16,21 @@ public class Main {
         //menu.mainMenuSwitch();
         ConnectionPool connectionPool = ConnectionPool.INSTANCE;
         ExecutorService executorService = Executors.newFixedThreadPool(5);
-        Runnable connectionGet = () -> {
-            try {
-                Connection connection = connectionPool.getConnection();
-                LOGGER.info("{} got connection {}", Thread.currentThread().getName(), connection.connectionID);
-                Thread.sleep(2000);
-                connectionPool.releaseConnection(connection);
-                LOGGER.info("Connection {} released", connection.connectionID);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        };
-        Runnable connectionGet1 = () -> {
-            try {
-                Connection connection = connectionPool.getConnection();
-                LOGGER.info("{} got connection {}", Thread.currentThread().getName(), connection.connectionID);
-                Thread.sleep(1000);
-                connectionPool.releaseConnection(connection);
-                LOGGER.info("Connection {} released", connection.connectionID);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        };
-        ArrayList<Runnable> taskList = new ArrayList<>(List.of(
-                connectionGet,
-                connectionGet,
-                connectionGet,
-                connectionGet,
-                connectionGet));
-        Thread thread1 = new Thread(connectionGet1);
-        Thread thread2 = new Thread(connectionGet1);
+        Thread thread1 = new Thread(ConnectionTask.getConnectionTask(1000, LOGGER, connectionPool));
+        Thread thread2 = new Thread(ConnectionTask.getConnectionTask(1000, LOGGER, connectionPool));
+        List<CompletableFuture<Void>> connectionFutures = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            connectionFutures.add(CompletableFuture
+                    .runAsync(ConnectionTask
+                            .getConnectionTask(2000, LOGGER, connectionPool), executorService));
+        }
         try {
             thread1.start();
             thread2.start();
-            for(Runnable task : taskList) {
-                executorService.execute(task);
-            }
-            thread1.join();
             thread2.join();
+            thread1.join();
+            connectionFutures.stream().map(CompletableFuture::join);
             executorService.shutdown();
-            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
