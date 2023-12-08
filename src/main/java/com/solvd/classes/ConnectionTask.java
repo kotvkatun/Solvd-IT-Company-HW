@@ -8,7 +8,7 @@ public class ConnectionTask {
             try {
                 Connection connection = connectionPool.getConnection();
                 LOGGER.info("{} got connection {}", Thread.currentThread().getName(), connection.connectionID);
-                Thread.sleep(1000);
+                Thread.sleep(threadSleep);
                 connectionPool.releaseConnection(connection);
                 LOGGER.info("Connection {} released", connection.connectionID);
             } catch (InterruptedException e) {
