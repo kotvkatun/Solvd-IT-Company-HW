@@ -17,12 +17,13 @@ public class Main {
         ConnectionPool connectionPool = ConnectionPool.INSTANCE;
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         List<CompletableFuture<Void>> connectionFutures = new ArrayList<>();
-        connectionFutures.add(CompletableFuture
-                .runAsync(ConnectionTask.getConnectionTask(1000, LOGGER, connectionPool)));
-        connectionFutures.add(CompletableFuture
-                .runAsync(ConnectionTask.getConnectionTask(1000, LOGGER, connectionPool)));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
+            if(i < 2){
+                connectionFutures.add(CompletableFuture
+                        .runAsync(ConnectionTask.getConnectionTask(1000, LOGGER, connectionPool)));
+                continue;
+            }
             connectionFutures.add(CompletableFuture
                     .runAsync(ConnectionTask
                             .getConnectionTask(2000, LOGGER, connectionPool), executorService));
