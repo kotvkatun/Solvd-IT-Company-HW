@@ -2,25 +2,31 @@ package com.solvd.classes.itcompany;
 
 import com.solvd.classes.developer.AbstractDeveloper;
 import com.solvd.classes.developer.Developer;
-import com.solvd.classes.initializer.DeveloperInitializer;
-import com.solvd.classes.interfaces.Addable;
-import com.solvd.classes.interfaces.Clearable;
+import com.solvd.classes.developer.Grades;
 import com.solvd.classes.project.Project;
 import com.solvd.classes.project.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class ITCompany implements Clearable, Addable {
     private String itCompanyName;
     private Project project;
-    private List<Developer> developerList = ITCompany.initializeDeveloperList();
+    private List<Developer> developerList;
+
+    {
+        Developer junVasya = new Developer(Grades.JUNIOR, "Vasya Pupkin");
+        Developer midPetya = new Developer(Grades.MIDDLE, "Petya Petrov");
+        Developer senPomidor = new Developer(Grades.SENIOR, "Senior Pomidor");
+        List<Developer> developerList = new ArrayList<>();
+        developerList.add(junVasya);
+        developerList.add(midPetya);
+        developerList.add(senPomidor);
+        this.developerList = developerList;
+    }
 
     public ITCompany(String itCompanyName) {
         this.itCompanyName = itCompanyName;
-    }
-
-    private static List<Developer> initializeDeveloperList() {
-        return DeveloperInitializer.initializeDeveloperList();
     }
 
     public String getItCompanyName() {
@@ -47,8 +53,11 @@ public final class ITCompany implements Clearable, Addable {
         this.developerList = developerList;
     }
 
-    public void switchToNextMonth() {
-        developerList.forEach(AbstractDeveloper::refreshTime);
+    public void refreshDeveloperTime() {
+        developerList = new ArrayList<>(
+                developerList.stream()
+                        .peek(AbstractDeveloper::refreshTime)
+                        .toList());
     }
 
     @Override

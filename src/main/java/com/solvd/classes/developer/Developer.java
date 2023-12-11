@@ -1,6 +1,6 @@
 package com.solvd.classes.developer;
 
-import com.solvd.classes.interfaces.CreatableFromInput;
+import com.solvd.classes.itcompany.CreatableFromInput;
 import com.solvd.classes.project.Task;
 import com.solvd.classes.ui.Input;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +13,7 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput {
     private static final BigDecimal DOUBLE = new BigDecimal(2);
     protected BigDecimal salary = new BigDecimal("0.0");
 
-    public Developer(Grade grade, String developerName) {
+    public Developer(Grades grade, String developerName) {
         super(grade, developerName);
     }
 
@@ -52,21 +52,25 @@ public class Developer extends AbstractDeveloper implements CreatableFromInput {
     @Override
     public Developer createFromInput() {
         LOGGER.info("Enter developer grade");
-        Grade grade = null;
-        while (grade == null) {
-            switch (Input.stringConsoleInput().toLowerCase()) {
+        IGetGrade<Grades> grader = s -> {
+            Grades g = null;
+            switch (s) {
                 case "junior":
-                    grade = Grade.JUNIOR;
+                    g = Grades.JUNIOR;
                     break;
                 case "middle":
-                    grade = Grade.MIDDLE;
+                    g = Grades.MIDDLE;
                     break;
                 case "senior":
-                    grade = Grade.SENIOR;
+                    g = Grades.SENIOR;
                     break;
                 default:
                     LOGGER.info("Incorrect grade. Try 'junior', 'middle' or 'senior'");
             }
+            return g;
+        };
+        while (grade == null) {
+            grade = grader.getGrade(Input.stringConsoleInput());
         }
         LOGGER.info("Enter developer's name");
         return new Developer(grade, Input.stringConsoleInput());

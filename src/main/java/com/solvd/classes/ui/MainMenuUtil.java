@@ -4,36 +4,18 @@ import com.solvd.classes.developer.Developer;
 import com.solvd.classes.exceptions.EmptyTaskListException;
 import com.solvd.classes.itcompany.ITCompany;
 import com.solvd.classes.json.JSONManager;
-import com.solvd.classes.project.CoolLinkedList;
 import com.solvd.classes.project.Project;
 import com.solvd.classes.project.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public final class MainMenu {
-    private static final Logger LOGGER = LogManager.getLogger(MainMenu.class);
-    private static int monthsPassed = 0;
-
-    public static void showMenu() {
-        LOGGER.info("Months passed: " + MainMenu.monthsPassed);
-        LOGGER.info("""
-                ----------------------------------
-                 Available commands:             \s
-                 📒 project - Show project info\s
-                 👨🏻‍💻 developer - Show developer info\s
-                 👉🏻 assign - Assign tasks to developers\s
-                 🛠 manage - Add or remove tasks from a project\s
-                 🧹 clear - Remove all current tasks from selected project\s
-                 🗂 undupe - Remove all duplicate tasks from selected project\s
-                 📜 todo - Get a list of tasks to do (forces undupe).\s
-                 🗓 next - Set time to next month and refresh developers time limits.\s
-                 💽 open - Load an existing project from a file\s
-                 💾 save - Save current project to a file (will keep project name)\s
-                 exit - Exit application""");
-    }
+public final class MainMenuUtil {
+    private static final Logger LOGGER = LogManager.getLogger(MainMenuUtil.class);
+    public static int monthsPassed = 0;
 
     public static boolean projectIsNull(Project project) {
         if (project == null) {
@@ -63,10 +45,10 @@ public final class MainMenu {
             return;
         }
         try {
-            MainMenu.developerInfo(developerList);
+            MainMenuUtil.developerInfo(developerList);
             LOGGER.info("Enter developer's index:");
             int devIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
-            MainMenu.projectInfo(project);
+            MainMenuUtil.projectInfo(project);
             LOGGER.info("Enter task index:");
             int taskIndex = Integer.parseInt(Input.stringConsoleInput()) - 1;
             developerList.get(devIndex).completeTask(project.getTaskList().get(taskIndex));
@@ -136,20 +118,24 @@ public final class MainMenu {
     }
 
     public static void nextMonth(ITCompany itCompany) {
-        itCompany.switchToNextMonth();
-        MainMenu.monthsPassed++;
-        MainMenu.showMenu();
+        itCompany.refreshDeveloperTime();
+        MainMenuUtil.monthsPassed++;
     }
 
     public static void toDoList(HashMap<String, Boolean> toDoMap) {
         LOGGER.info("Tasks to do: ");
-        for (String taskName : toDoMap.keySet()) {
-            String marker = (toDoMap.get(taskName)) ? " ✅" : " ❌";
-            LOGGER.info(taskName + marker);
-        }
+        toDoMap.entrySet()
+                .stream()
+                .map(entry -> (entry.getValue()) ? entry.getKey() + " ✅" : entry.getKey() + " ❌")
+                .forEach(LOGGER::info);
     }
 
-    public static void undupe(CoolLinkedList<Task> taskCoolLinkedList) {
-        taskCoolLinkedList.clearDupes();
+    public static void filterTaskListByReward(ArrayList<Task> taskList) {
+        List<Task> filteredTasks = taskList.stream()
+                .filter(Input.constructPredicateFromInput())
+                .toList();
+        for (Task task : filteredTasks) {
+            LOGGER.info(task.toString());
+        }
     }
 }

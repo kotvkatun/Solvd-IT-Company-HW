@@ -1,4 +1,4 @@
-package com.solvd.classes.interfaces;
+package com.solvd.classes.itcompany;
 
 import com.solvd.classes.developer.Developer;
 import com.solvd.classes.project.Task;

@@ -4,21 +4,24 @@ import com.solvd.classes.exceptions.EmptyTaskListException;
 import com.solvd.classes.exceptions.IncorrectProjectNameException;
 import com.solvd.classes.exceptions.NegativeRewardException;
 import com.solvd.classes.exceptions.NegativeTimeRequiredException;
-import com.solvd.classes.interfaces.Clearable;
-import com.solvd.classes.interfaces.JSONExternalizable;
+import com.solvd.classes.itcompany.Clearable;
+import com.solvd.classes.json.JSONExternalizable;
 import com.solvd.classes.json.JSONManager;
 import com.solvd.classes.ui.Input;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Project implements JSONExternalizable, Clearable {
     public static final Logger LOGGER = LogManager.getLogger(Project.class);
     private String projectName;
-    private CoolLinkedList<Task> taskList;
+    private ArrayList<Task> taskList;
 
     public Project(String projectName) {
         this.projectName = projectName;
@@ -106,11 +109,11 @@ public class Project implements JSONExternalizable, Clearable {
         this.projectName = projectName;
     }
 
-    public CoolLinkedList<Task> getTaskList() {
+    public ArrayList<Task> getTaskList() {
         return taskList;
     }
 
-    public void setTaskList(CoolLinkedList<Task> taskList) {
+    public void setTaskList(ArrayList<Task> taskList) {
         this.taskList = taskList;
     }
 
@@ -123,13 +126,17 @@ public class Project implements JSONExternalizable, Clearable {
         return null;
     }
 
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
+    }
+
+
     public HashMap<String, Boolean> getToDoList() {
-        HashMap<String, Boolean> toDoMap = new HashMap<>();
-        this.getTaskList().clearDupes();
-        for (Task task : this.getTaskList()) {
-            toDoMap.put(task.getTaskName(), task.getComplete());
-        }
-        return toDoMap;
+        List<Task> tasks = new ArrayList<>(this.getTaskList());
+        return tasks.stream()
+                .filter(distinctByKey(Task::getTaskName))
+                .collect(Collectors.toMap(Task::getTaskName, Task::getComplete, (prev, next) -> next, HashMap::new));
     }
 
     @Override

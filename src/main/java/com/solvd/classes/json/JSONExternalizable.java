@@ -1,4 +1,4 @@
-package com.solvd.classes.interfaces;
+package com.solvd.classes.json;
 
 
 import java.io.IOException;

@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 public final class MenuSwitch {
     private static final Logger LOGGER;
+    private final String menu;
+
 
     static {
         LOGGER = LogManager.getLogger(MenuSwitch.class);
@@ -13,46 +15,48 @@ public final class MenuSwitch {
 
     private final ITCompany ITCOMPANY = new ITCompany("ExampleLLC");
 
+    {
+        MainMenuUtil.open(ITCOMPANY);
+        menu = MenuOptions.getOptions();
+    }
+
     public void mainMenuSwitch() {
         while (true) {
-            MainMenu.showMenu();
-            switch (Input.stringConsoleInput()) {
-                case "project":
-                    MainMenu.projectInfo(ITCOMPANY.getProject());
+            LOGGER.info("Months passed: " + MainMenuUtil.monthsPassed);
+            LOGGER.info(menu);
+            switch (Input.menuOptionConsoleInput()) {
+                case PROJECT:
+                    MainMenuUtil.projectInfo(ITCOMPANY.getProject());
                     break;
-                case "developer":
-                    MainMenu.developerInfo(ITCOMPANY.getDeveloperList());
+                case DEVELOPER:
+                    MainMenuUtil.developerInfo(ITCOMPANY.getDeveloperList());
                     break;
-                case "assign":
-                    MainMenu.assign(ITCOMPANY.getDeveloperList(), ITCOMPANY.getProject());
+                case ASSIGN:
+                    MainMenuUtil.assign(ITCOMPANY.getDeveloperList(), ITCOMPANY.getProject());
                     break;
-                case "next":
-                    MainMenu.nextMonth(ITCOMPANY);
+                case NEXT:
+                    MainMenuUtil.nextMonth(ITCOMPANY);
                     break;
-                case "manage":
-                    MainMenu.manage(ITCOMPANY.getProject());
+                case MANAGE:
+                    MainMenuUtil.manage(ITCOMPANY.getProject());
                     break;
-                case "clear":
-                    MainMenu.clearProject(ITCOMPANY.getProject());
+                case CLEAR:
+                    MainMenuUtil.clearProject(ITCOMPANY.getProject());
                     break;
-                case "undupe":
-                    MainMenu.undupe(ITCOMPANY.getProject().getTaskList());
+                case TODO:
+                    MainMenuUtil.toDoList(ITCOMPANY.getProject().getToDoList());
                     break;
-                case "todo":
-                    MainMenu.toDoList(ITCOMPANY.getProject().getToDoList());
+                case FILTER:
+                    MainMenuUtil.filterTaskListByReward(ITCOMPANY.getProject().getTaskList());
                     break;
-                case "open":
-                    MainMenu.open(ITCOMPANY);
+                case OPEN:
+                    MainMenuUtil.open(ITCOMPANY);
                     break;
-                case "save":
-                    MainMenu.save(ITCOMPANY.getProject());
+                case SAVE:
+                    MainMenuUtil.save(ITCOMPANY.getProject());
                     break;
-                case "exit":
+                case EXIT:
                     System.exit(0);
-                default:
-                    LOGGER.info("Wrong command.");
-                    break;
-
             }
         }
     }

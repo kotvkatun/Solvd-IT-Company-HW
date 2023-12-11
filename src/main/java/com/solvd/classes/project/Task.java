@@ -1,6 +1,6 @@
 package com.solvd.classes.project;
 
-import com.solvd.classes.interfaces.CreatableFromInput;
+import com.solvd.classes.itcompany.CreatableFromInput;
 import com.solvd.classes.ui.Input;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
